@@ -1,5 +1,6 @@
 from tkinter import *
 import GUI
+import Graphics2D
 
 class Graphics2D(GUI.Application):
     def __init__(self, root):
@@ -105,4 +106,9 @@ class Graphics2D(GUI.Application):
         self.draw_line( x1, y1, x2, y2)  # Cạnh đáy
         self.draw_line(x2, y2, x3, y3)  # Cạnh kề
         self.draw_line(x3, y3, x1, y1)  # Cạnh huyền
-        
+    
+    def draw_ellipse(self, x1, y1, radius_1, radius_2):
+        pass
+    
+    def draw_Graphics2D_main():
+        pass

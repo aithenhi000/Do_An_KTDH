@@ -53,7 +53,7 @@ class Application:
             canvas.create_text(canvas_width/2+9,y, text=str(int(-(y-self.canvas_height/2)/5)), font=('Arial', 7))
     
     def create_panel(self):
-        panel_root = Frame(self.root, height= self.panel_height, width=self.panel_width)
+        panel_root = Frame(self.root, height= self.panel_height, width=self.panel_width, padx=10)
         panel_root.pack(side=RIGHT)
         self.panel_root=panel_root
         self.root.update()
@@ -68,9 +68,12 @@ class Application:
         panel_show_info_canvas.update()
    
     def create_menu(self):
-        panel_menu=LabelFrame(self.panel_root, height= self.panel_height/2, width=self.panel_width, text="MENU",bg="#FEFAF6")
+        panel_menu=LabelFrame(self.panel_root, text="MENU",bg="#FEFAF6")
         panel_menu.pack(side=TOP)
+        self.panel_menu=panel_menu
         self.panel_root.update()
+        label1 = Label(panel_menu, width=self.panel_menu.winfo_width(), text="Number 1:")
+        label1.pack()
 
         
         
