@@ -7,9 +7,17 @@ def tinh_tien(pos, delta_x, delta_y):
     mul_matrix = np.array(( [1, 0, 0],
                             [0, 1, 0],
                             [delta_x, delta_y, 1]))
-    
-    for x in range(0,pos.shape[0]):        
-        pos[x]=np.matmul(pos[x],mul_matrix)
+    if pos.ndim == 1:
+        pos = np.matmul(pos, mul_matrix)
+    else:
+        for x in range(0,pos.shape[0]):        
+            pos[x]=np.matmul(pos[x],mul_matrix)
+            
+    return pos
+
+arr= np.array(([4,5,1]))
+arr = tinh_tien(arr,10,10)
+print(arr)
         
 def xoay_goc_x_do(pos, deg):
     
@@ -19,18 +27,26 @@ def xoay_goc_x_do(pos, deg):
     mul_matrix = np.array(( [cos,     sin,  0],
                             [-1*sin,  cos,  0],
                             [0,         0,  1]))
-     
-    for x in range(0,pos.shape[0]):        
-        pos[x]=np.matmul(pos[x],mul_matrix)
+    if pos.ndim == 1:
+        pos = np.matmul(pos, mul_matrix) 
+    else:
+        for x in range(0,pos.shape[0]):        
+            pos[x]=np.matmul(pos[x],mul_matrix)
+            
+    return pos
 
 def ti_le(pos, ratio):
     
     mul_matrix = np.array(( [ratio, 0,      0],
                             [0,     ratio,  0],
                             [0,     0,      1]))
-     
-    for x in range(0,pos.shape[0]):        
-        pos[x]=np.matmul(pos[x],mul_matrix)
+    if pos.ndim == 1:
+        pos = np.matmul(pos, mul_matrix)
+    else :
+        for x in range(0,pos.shape[0]):        
+            pos[x]=np.matmul(pos[x],mul_matrix)
+        
+    return pos
 
 
 def doi_xung(pos, choice):
@@ -38,8 +54,13 @@ def doi_xung(pos, choice):
                             [0,         -choice[0],  0],
                             [0,          0,          1]))
      
-    for x in range(0,pos.shape[0]):        
-        pos[x]=np.matmul(pos[x],mul_matrix)
+    if pos.ndim == 1:
+        pos = np.matmul(pos, mul_matrix)
+    else:
+        for x in range(0,pos.shape[0]):        
+            pos[x]=np.matmul(pos[x],mul_matrix)
+    
+    return pos
 
 #Hàm chính, nhập các giá trị độ dài tại đây (từ tọa độ 2 điểm ban đầu), tính toán vị trí để putpixel
 def draw(a,b, right, up):
