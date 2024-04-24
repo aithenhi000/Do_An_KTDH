@@ -2,22 +2,15 @@ import math as m
 import numpy as np
 
 
+
 def tinh_tien(pos, delta_x, delta_y):
     
     mul_matrix = np.array(( [1, 0, 0],
                             [0, 1, 0],
                             [delta_x, delta_y, 1]))
-    if pos.ndim == 1:
-        pos = np.matmul(pos, mul_matrix)
-    else:
-        for x in range(0,pos.shape[0]):        
-            pos[x]=np.matmul(pos[x],mul_matrix)
-            
-    return pos
-
-arr= np.array(([4,5,1]))
-arr = tinh_tien(arr,10,10)
-print(arr)
+    
+    for x in range(0,pos.shape[0]):        
+        pos[x]=np.matmul(pos[x],mul_matrix)
         
 def xoay_goc_x_do(pos, deg):
     
