@@ -76,7 +76,30 @@ class Application:
         label1.pack()
 
         
-        
-    
-        
-    
+    def re_create_grid_pixel(self, canvas):
+        canvas_width = (canvas.winfo_width()//10)*10
+        canvas_height = (canvas.winfo_height()//10)*10
+        self.canvas_width=canvas_width
+        self.canvas_height=canvas_height
+
+        goc_toa_do=(canvas_width/2, canvas_height/2)
+
+        #draw grid
+        grid_size=5
+        for x in range(0,canvas_width, grid_size):
+            canvas.create_line(x, 0, x, canvas_height, fill="#EADBC8")
+        for y in range(0,canvas_height, grid_size):
+            canvas.create_line(0, y, canvas_width, y, fill="#EADBC8")
+            
+            
+        # X axis
+        canvas.create_line(0, canvas_height/2, canvas_width, canvas_height/2)
+        for x in range(0, canvas_width, 50):
+            canvas.create_rectangle(x-1, canvas_height/2-1, x+1, canvas_height/2+1, fill='red')
+            canvas.create_text(x, canvas_height/2+8, text=str(int((x- self.canvas_width/2)/5)), font=('Arial', 7))
+
+        # Y axis
+        canvas.create_line(canvas_width/2, 0, canvas_width/2, canvas_height, fill="black")
+        for y in range(0, canvas_height, 50):
+            canvas.create_rectangle(canvas_width/2-1, y-1 ,canvas_width/2+1,y+1,  fill='red')
+            canvas.create_text(canvas_width/2+9,y, text=str(int(-(y-self.canvas_height/2)/5)), font=('Arial', 7))

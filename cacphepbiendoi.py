@@ -1,6 +1,6 @@
 import math as m 
 import numpy as np
-
+import Graphics2D as g2D
 
 
 def tinh_tien(pos, delta_x, delta_y):
@@ -55,20 +55,20 @@ def doi_xung(pos, choice):
     
     return pos
 
-#Hàm chính, nhập các giá trị độ dài tại đây (từ tọa độ 2 điểm ban đầu), tính toán vị trí để putpixel
-def draw(a,b, right, up):
+#Test site, nhập 2 tọa độ x y ban đầu
+def draw(a,b):
     
     pos = np.array([[0,0],[a,0],[a,b],[0,b]])
     pos = np.insert(pos,2,1,1)
-    
-    
-    xoay_goc_x_do(pos,45)
-    tinh_tien(pos, 35, 12)
-    doi_xung(pos,[1,1]) #doi xung truc [x,y] - yes/no
+
+    #xoay_goc_x_do(pos,45)
+    #tinh_tien(pos, 35, 12)
+    #doi_xung(pos,[1,1]) #doi xung truc [x,y] - yes/no
     
     for x in range(0,pos.shape[0]): 
         if x == pos.shape[0]-1:
             next = 0
         else:
             next = x + 1
-        drawA_to_B(pos[x],pos[next])
+        g2D.draw_line(pos[x][0],pos[x][1],pos[next][0],pos[next][1])
+    

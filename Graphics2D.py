@@ -1,9 +1,6 @@
 from tkinter import *
 import GUI
-<<<<<<< HEAD
 import Graphics2D
-=======
->>>>>>> parent of d60d080 (them ham elip)
 
 class Graphics2D(GUI.Application):
     def __init__(self, root):
