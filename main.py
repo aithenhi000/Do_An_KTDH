@@ -1,52 +1,80 @@
 from tkinter import *
-import GUI 
-import Graphics2D
-import numpy as np
-import cacphepbiendoi
+from Graphics2D import Graphics2D
+from Graphics3D import Graphics3D
+from tkinter import messagebox
 
-def draw_object(g2D, obj_array):
-    for x in range(0,obj_array.shape[0]):
-        if x == obj_array.shape[0]-1:
-            next = 0
-        else:
-            next = x + 1
-        g2D.draw_line(obj_array[x][0],obj_array[x][1],obj_array[next][0],obj_array[next][1])
+class Application(Tk):
+    def __init__(self):
+        super().__init__()
+        self.width=1050
+        self.height=750
+        self.grid_size = 5
+        self.origin=(self.width//2, self.height//2)
+        self.title("ĐỒ ÁN KỸ THUẬT ĐỒ HỌA")
+        self.iconbitmap('Do_An_KTDH\\icon_app.ico')
+        self.geometry("1500x750")
+        self.create_taskbar()
+
+
+    def create_taskbar(self):
+        # Tạo thanh taskbar
+        button_font = ("Arial", 10, "bold")
+        self.taskbar_frame = Frame(self, bg="lightgray", height=50)
+        self.taskbar_frame.pack(fill="both")
+
+        self.button_2d = Button(self.taskbar_frame, text="HOME PAGE", command=self.show_home_page, font=button_font)
+        self.button_2d.pack(side="left", padx=5)
         
-def update_frame(g2D, m_head_rectangle, m_body): #Phương án hiện tại: Xóa toàn bộ nội dung trong canvas rồi tạo lại hệ tọa độ + vẽ hình ở vị trí mới
+        # Tạo button 2D
+        self.button_2d = Button(self.taskbar_frame, text="GRAPHICS 2D", command=self.show_2d_application, font=button_font, bg='#FFC470')
+        self.button_2d.pack(side="left", padx=5)
 
-    g2D.canvas.delete('all')
-    g2D.re_create_grid_pixel(g2D.canvas)
+        
+        
+        # Tạo button 3D
+        self.button_3d = Button(self.taskbar_frame, text="GRAPHICS 3D", command=self.show_3d_application, font=button_font,bg='#4793AF')
+        self.button_3d.pack(side="left", padx=5)
+        
+        self.close_button = Button(self.taskbar_frame, text="Close App", command=self.close_app, bg='#8B322C', fg='white',font=button_font)
+        self.close_button.pack(side="left", padx=5)
+
+        self.lb_title=Label(self.taskbar_frame, text="Đồ án kỹ thuật đồ họa", bg="lightgray", font=("Arial", 16, "bold"))
+        self.lb_title.pack(side="left", padx=200)
+        
+
+        
+    def close_app(self):
+        confirm = messagebox.askyesno("Close Confirmation", "Are you sure you want to close the application?")
+        if confirm:
+            self.destroy()
+            
+    def show_home_page(self):
+        for widget in self.winfo_children():
+            widget.pack_forget()
+        self.create_taskbar()
     
-    cacphepbiendoi.tinh_tien(m_head_rectangle,3,0)
-    cacphepbiendoi.tinh_tien(m_body,3,0)
+    def show_2d_application(self):
+        self.clear_application()
+        self.app_2d = Graphics2D(master=self)
+        self.lb_title.config(text='GIAO DIỆN ĐỒ HỌA 2D')
+        self.app_2d.pack()
+
+    def show_3d_application(self):
+        self.clear_application()
+        self.lb_title.config(text='GIAO DIỆN ĐỒ HỌA 3D')
+        self.app_3d = Graphics3D(master=self)
+        self.app_3d.pack()
+
+    def clear_application(self):
+        for widget in self.winfo_children():
+            if isinstance(widget, (Graphics3D, Graphics2D)):
+                widget.pack_forget()
     
-    draw_object(g2D, m_head_rectangle)
-    draw_object(g2D, m_body)
-    
-    g2D.root.after(1000,update_frame, g2D, m_head_rectangle, m_body) #Gọi lại hàm để tiếp tục cập nhật (kiểu kiểu như đệ quy)
-    
+
+
 def main():
-    
-    root=Tk()
-    g2D=Graphics2D.Graphics2D(root)
-     
-    root.state('zoomed') #thêm cái này đặt cửa sổ tkinter ở trạng thái zoom
-    
-    #Missile, khai báo các mảng chứa tọa độ các điểm của từng bộ phận (mỗi bộ phận là một hình cơ sở)
-    m_head_rectangle = np.array(([10,10,1],
-                                 [10,20,1],
-                                 [20,15,1]))
-    m_body = np.array(([-10,10,1],
-                       [ 10,10,1],
-                       [ 10,20,1],
-                       [-10,20,1]))
-    
-    draw_object(g2D, m_head_rectangle)
-    draw_object(g2D, m_body)
-    
-    g2D.root.after(1000,update_frame, g2D, m_head_rectangle, m_body) #Cập nhật vị trí mỗi mỗi 1000 giây
-
-    root.mainloop()
+    app = Application()
+    app.mainloop()
 
 if __name__ == "__main__":
     main()
