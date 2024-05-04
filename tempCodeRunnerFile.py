@@ -1,3 +1,3 @@
-def show_home_page(self):
-        for widget in self.winfo_children():
-            widget.pack_forget()
+        self.app_2d = Graphics2D(master=self)
+        self.lb_title.config(text='GIAO DIỆN ĐỒ HỌA 2D')
+        self.app_2d.pack()

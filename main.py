@@ -2,6 +2,8 @@ from tkinter import *
 from Graphics2D import Graphics2D
 from Graphics3D import Graphics3D
 from tkinter import messagebox
+from sailboat import sailboat
+
 
 class Application(Tk):
     def __init__(self):
@@ -14,6 +16,8 @@ class Application(Tk):
         self.iconbitmap('Do_An_KTDH\\icon_app.ico')
         self.geometry("1500x750")
         self.create_taskbar()
+        self.state("zoomed")
+
 
 
     def create_taskbar(self):
@@ -36,7 +40,7 @@ class Application(Tk):
         self.button_3d.pack(side="left", padx=5)
         
         self.close_button = Button(self.taskbar_frame, text="Close App", command=self.close_app, bg='#8B322C', fg='white',font=button_font)
-        self.close_button.pack(side="left", padx=5)
+        self.close_button.pack(side="right", padx=5)
 
         self.lb_title=Label(self.taskbar_frame, text="Đồ án kỹ thuật đồ họa", bg="lightgray", font=("Arial", 16, "bold"))
         self.lb_title.pack(side="left", padx=200)
@@ -58,6 +62,8 @@ class Application(Tk):
         self.app_2d = Graphics2D(master=self)
         self.lb_title.config(text='GIAO DIỆN ĐỒ HỌA 2D')
         self.app_2d.pack()
+        # self.sb1=sailboat(master=self)
+        # self.sb1.pack()
 
     def show_3d_application(self):
         self.clear_application()

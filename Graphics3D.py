@@ -10,7 +10,7 @@ class Graphics3D(Frame):
         self.configure(padx=20, pady=20)
         self.create_grid_pixel_3D()
         self.create_menu3d()
-
+        
         
     def focus_next_entry(event):
         event.widget.tk_focusNext().focus()

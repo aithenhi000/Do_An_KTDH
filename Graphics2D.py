@@ -2,6 +2,8 @@ from tkinter import *
 import math as m
 import numpy as np
 
+
+
 class Graphics2D(Frame):
     def __init__(self, master):
         super().__init__(master)
@@ -13,15 +15,9 @@ class Graphics2D(Frame):
         self.create_canvas()
         self.create_grid_pixel()
         self.create_menu()
-        self.taohcn()
-        
         self.create_info_panel()
 
         
-    def taohcn(self):
-        self.hcn1=self.canvas.create_rectangle(1,1,20,30, fill='red')
-        self.canvas.delete(self.hcn1)
-        self.hcn2=self.canvas.create_rectangle(50,50,80,80, fill='blue')
         
     
     def create_menu(self):
@@ -40,20 +36,26 @@ class Graphics2D(Frame):
 
     def move_2d(self):
 
-        rec1_1=self.tinh_tien(self.rec1, 5, 5)
-        rec1_1=self.ti_le(rec1_1, 1.2)
-        rec1_1=self.xoay_goc_x_do(rec1_1, 30)
+        self.rec1=self.tinh_tien(self.rec1, 5, 5)
+        self.rec1=self.ti_le(self.rec1, 1.2)
+        self.rec1=self.xoay_goc_x_do(self.rec1, 30)
         
         self.canvas.delete(*self.rec1_id) #Xóa đi hình trước vẽ
-        self.rec1, self.rec1_id=self.draw_rectangle(rec1_1[0,0], rec1_1[0,1], rec1_1[1,0], rec1_1[1,1])
+        self.rec1, self.rec1_id=self.draw_rectangle(self.rec1[0,0], self.rec1[0,1], self.rec1[1,0], self.rec1[1,1])
+        
+        # self.tria1=self.xoay_goc_x_do(self.tria1, 90)
+        # self.canvas.delete(*self.tria1_id)
+        # self.tria1, self.tria1_id=self.draw_triangle(self.tria1[0,0],self.tria1[0,1],self.tria1[1,0],self.tria1[1,1],self.tria1[2,0],self.tria1[2,1])
 
     def draw_2d_main(self):
         self.rec1, self.rec1_id=self.draw_rectangle(1,1,10,20)
-        
+        # self.tria1, self.tria1_id=self.draw_isosceles_triangle(50,50, 30,60)
+        print(self.tria1)
         
     def create_canvas(self):
         self.canvas = Canvas(self, width=self.width, height=self.height, bg="#FEFAF6")
         self.canvas.pack(side=LEFT)
+
 
     def create_grid_pixel(self):
         canvas=self.canvas   
@@ -88,6 +90,7 @@ class Graphics2D(Frame):
                 text=str(int(-(y - self.height / 2) / 5)),
                 font=("Arial", 7),
             )
+
 
     def put_pixel(self, x, y, color="green"):
         adjusted_x = self.width/2 + x*5
@@ -168,9 +171,10 @@ class Graphics2D(Frame):
         return np.array(([x1,y1,1], [x2,y2,1])), arr
 
     def draw_triangle(self, x1, y1, x2, y2, x3, y3):
-        self.draw_line(x1, y1, x2, y2)
-        self.draw_line(x2, y2, x3, y3)
-        self.draw_line(x3, y3, x1, y1)
+        arr=self.draw_line(x1, y1, x2, y2)
+        arr.extend(self.draw_line(x2, y2, x3, y3))
+        arr.extend(self.draw_line(x3, y3, x1, y1))
+        return np.array(([x1,y1,1],[x2,y2,1],[x3,y3,1])), arr
 
     def draw_isosceles_triangle(self, x1, y1, base, height):
         # Tính toán tọa độ của các đỉnh của tam giác cân
@@ -180,9 +184,10 @@ class Graphics2D(Frame):
         y3 = y1 + height
 
         # Vẽ các cạnh của tam giác
-        self.draw_line(x1, y1, x2, y2)  # Cạnh đáy
-        self.draw_line(x1, y1, x3, y3)  # Cạnh bên
-        self.draw_line(x2, y2, x3, y3)  # Cạnh bên
+        arr=self.draw_line(x1, y1, x2, y2)  # Cạnh đáy
+        arr.extend(self.draw_line(x2, y2, x3, y3))  # Cạnh bên
+        arr.extend(self.draw_line(x1, y1, x3, y3))  # Cạnh bên
+        return np.array(([x1,y1,1],[x2,y2,1],[x3,y3,1])), arr
 
     def draw_right_triangle(self, x1, y1, base, height):
         x2 = x1 + base
