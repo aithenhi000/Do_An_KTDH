@@ -3,7 +3,6 @@ import math as m
 import numpy as np
 
 
-
 class Graphics2D(Frame):
     def __init__(self, master):
         super().__init__(master)
@@ -17,9 +16,6 @@ class Graphics2D(Frame):
         self.create_menu()
         self.create_info_panel()
 
-        
-        
-    
     def create_menu(self):
         self.btn_draw_2d = Button(
             self, text="Vẽ cảnh 2D", bg='#FFC470', font=("Arial", 12, "bold"), command=self.draw_2d_main
@@ -39,23 +35,23 @@ class Graphics2D(Frame):
         self.rec1=self.tinh_tien(self.rec1, 5, 5)
         self.rec1=self.ti_le(self.rec1, 1.2)
         self.rec1=self.xoay_goc_x_do(self.rec1, 30)
-        
+
         self.canvas.delete(*self.rec1_id) #Xóa đi hình trước vẽ
         self.rec1, self.rec1_id=self.draw_rectangle(self.rec1[0,0], self.rec1[0,1], self.rec1[1,0], self.rec1[1,1])
-        
+
         # self.tria1=self.xoay_goc_x_do(self.tria1, 90)
         # self.canvas.delete(*self.tria1_id)
         # self.tria1, self.tria1_id=self.draw_triangle(self.tria1[0,0],self.tria1[0,1],self.tria1[1,0],self.tria1[1,1],self.tria1[2,0],self.tria1[2,1])
 
     def draw_2d_main(self):
-        self.rec1, self.rec1_id=self.draw_rectangle(1,1,10,20)
-        # self.tria1, self.tria1_id=self.draw_isosceles_triangle(50,50, 30,60)
-        print(self.tria1)
+        self.rec1, self.rec1_id = self.draw_rectangle(1, 1, 10, 20)
+        # self.tria1, self.tria1_id = self.draw_isosceles_triangle(50, 50, 30, 60)
         
+        print(self.tria1)
+        print(self.tria1_id)
     def create_canvas(self):
         self.canvas = Canvas(self, width=self.width, height=self.height, bg="#FEFAF6")
         self.canvas.pack(side=LEFT)
-
 
     def create_grid_pixel(self):
         canvas=self.canvas   
@@ -90,7 +86,6 @@ class Graphics2D(Frame):
                 text=str(int(-(y - self.height / 2) / 5)),
                 font=("Arial", 7),
             )
-
 
     def put_pixel(self, x, y, color="green"):
         adjusted_x = self.width/2 + x*5
@@ -129,7 +124,7 @@ class Graphics2D(Frame):
                     p += f1
                     x += x_step
                 arr.append(self.put_pixel(x,y))
-        
+
         return arr   
 
     def draw_circle(self, x_center, y_center, radius):
@@ -163,7 +158,7 @@ class Graphics2D(Frame):
             self.put_pixel(point[0], point[1])
 
     def draw_rectangle(self, x1, y1, x2, y2):
-        
+
         arr=self.draw_line(x1, y1, x2, y1)
         arr.extend(self.draw_line(x2, y1, x2, y2))
         arr.extend(self.draw_line(x2, y2, x1, y2))
@@ -256,7 +251,7 @@ class Graphics2D(Frame):
 
     def ti_le(self, pos, ratio):
         mul_matrix = np.array(([ratio, 0, 0], [0, ratio, 0], [0, 0, 1]))
-        
+
         if pos.ndim == 1:
             pos = np.matmul(pos, mul_matrix)
         else:
@@ -269,10 +264,10 @@ class Graphics2D(Frame):
         self.create_grid_pixel()
 
     def xoay_goc_x_do(self, pos, deg):
-    
+
         cos=  m.cos(deg*m.pi/180)
         sin = m.sin(deg*m.pi/180)
-        
+
         mul_matrix = np.array(( [cos,     sin,  0],
                                 [-1*sin,  cos,  0],
                                 [0,         0,  1]))
@@ -281,5 +276,5 @@ class Graphics2D(Frame):
         else:
             for x in range(0,pos.shape[0]):        
                 pos[x]=np.matmul(pos[x],mul_matrix)
-                
+
         return pos
