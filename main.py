@@ -2,8 +2,7 @@ from tkinter import *
 from Graphics2D import Graphics2D
 from Graphics3D import Graphics3D
 from tkinter import messagebox
-from sailboat import sailboat
-
+from PIL import Image, ImageTk
 
 class Application(Tk):
     def __init__(self):
@@ -16,8 +15,6 @@ class Application(Tk):
         self.iconbitmap('Do_An_KTDH\\icon_app.ico')
         self.geometry("1500x750")
         self.create_taskbar()
-        self.state("zoomed")
-
 
 
     def create_taskbar(self):
@@ -45,6 +42,7 @@ class Application(Tk):
         self.lb_title=Label(self.taskbar_frame, text="Đồ án kỹ thuật đồ họa", bg="lightgray", font=("Arial", 16, "bold"))
         self.lb_title.pack(side="left", padx=200)
         
+
 
         
     def close_app(self):

@@ -39,13 +39,15 @@ class Graphics2D(Frame):
         self.canvas.delete(*self.rec1_id) #Xóa đi hình trước vẽ
         self.rec1, self.rec1_id=self.draw_rectangle(self.rec1[0,0], self.rec1[0,1], self.rec1[1,0], self.rec1[1,1])
 
-        # self.tria1=self.xoay_goc_x_do(self.tria1, 90)
-        # self.canvas.delete(*self.tria1_id)
-        # self.tria1, self.tria1_id=self.draw_triangle(self.tria1[0,0],self.tria1[0,1],self.tria1[1,0],self.tria1[1,1],self.tria1[2,0],self.tria1[2,1])
+        self.tria1=self.xoay_goc_x_do(self.tria1, 90)
+        self.canvas.delete(*self.tria1_id)
+        self.tria1, self.tria1_id=self.draw_triangle(self.tria1[0,0],self.tria1[0,1],self.tria1[1,0],self.tria1[1,1],self.tria1[2,0],self.tria1[2,1])
 
+
+    
     def draw_2d_main(self):
         self.rec1, self.rec1_id = self.draw_rectangle(1, 1, 10, 20)
-        # self.tria1, self.tria1_id = self.draw_isosceles_triangle(50, 50, 30, 60)
+        self.tria1, self.tria1_id = self.draw_isosceles_triangle(50, 50, 30, 60)
         
         print(self.tria1)
         print(self.tria1_id)
@@ -95,6 +97,10 @@ class Graphics2D(Frame):
 
     def draw_line(self, x1, y1, x2, y2):
         arr=[]
+        x1=round(x1)
+        y1=round(y1)
+        x2=round(x2)
+        y2=round(y2)
         dx = abs(x2 - x1)
         dy = abs(y2 - y1)
         x, y = x1, y1
