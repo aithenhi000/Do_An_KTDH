@@ -2,21 +2,19 @@ from tkinter import *
 from Graphics2D import Graphics2D
 from Graphics3D import Graphics3D
 from tkinter import messagebox
-from PIL import Image, ImageTk
-
+from home import Home
 class Application(Tk):
     def __init__(self):
         super().__init__()
-        self.width=1050
+        self.width=1500
         self.height=750
-        self.grid_size = 5
-        self.origin=(self.width//2, self.height//2)
         self.title("ĐỒ ÁN KỸ THUẬT ĐỒ HỌA")
         self.iconbitmap('Do_An_KTDH\\icon_app.ico')
-        self.geometry("1500x750")
+        self.geometry(f"{self.width}x{self.height}")
         self.create_taskbar()
+        self.state("zoomed")
 
-
+    
     def create_taskbar(self):
         # Tạo thanh taskbar
         button_font = ("Arial", 10, "bold")
@@ -42,18 +40,17 @@ class Application(Tk):
         self.lb_title=Label(self.taskbar_frame, text="Đồ án kỹ thuật đồ họa", bg="lightgray", font=("Arial", 16, "bold"))
         self.lb_title.pack(side="left", padx=200)
         
-
-
-        
     def close_app(self):
         confirm = messagebox.askyesno("Close Confirmation", "Are you sure you want to close the application?")
         if confirm:
             self.destroy()
             
     def show_home_page(self):
-        for widget in self.winfo_children():
-            widget.pack_forget()
-        self.create_taskbar()
+        self.clear_application()
+        self.home = Home(master=self, width=self.width, height=self.height)
+        self.lb_title.config(text='Kỹ thuật đồ họa')
+        self.home.pack()
+        
     
     def show_2d_application(self):
         self.clear_application()
@@ -71,7 +68,7 @@ class Application(Tk):
 
     def clear_application(self):
         for widget in self.winfo_children():
-            if isinstance(widget, (Graphics3D, Graphics2D)):
+            if isinstance(widget, (Graphics3D, Graphics2D, Home)):
                 widget.pack_forget()
     
 

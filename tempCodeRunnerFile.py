@@ -1,1 +1,0 @@
-        # self.geometry("1500x750")

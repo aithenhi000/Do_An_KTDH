@@ -200,6 +200,7 @@ class Graphics2D(Frame):
         self.draw_line( x1, y1, x2, y2)  # Cạnh đáy
         self.draw_line(x2, y2, x3, y3)  # Cạnh kề
         self.draw_line(x3, y3, x1, y1)  # Cạnh huyền
+        return np.array(([x1,y1,1],[x2,y2,1],[x3,y3,1])), arr
 
     def draw_ellipse(self, x_center, y_center, a, b):
         # self.put_pixel()
