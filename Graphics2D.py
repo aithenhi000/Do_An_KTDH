@@ -200,52 +200,56 @@ class Graphics2D(Frame):
         self.draw_line( x1, y1, x2, y2)  # Cạnh đáy
         self.draw_line(x2, y2, x3, y3)  # Cạnh kề
         self.draw_line(x3, y3, x1, y1)  # Cạnh huyền
-        return np.array(([x1,y1,1],[x2,y2,1],[x3,y3,1])), arr
+        return np.array(([x1,y1,1],[x2,y2,1],[x3,y3,1]))
 
-    def draw_ellipse(self, x_center, y_center, a, b):
-        # self.put_pixel()
+    def draw_ellipse(self, xc, yc, a, b):
         x = 0
         y = b
-        # a2=a*a
-        # b2=b*b
-        fx=0
-        fy=2*a*a*y
 
-        self.put_pixel(x_center+x, y_center+y)
-        self.put_pixel(x_center-x, y_center+y)
-        self.put_pixel(x_center+x, y_center-y)
-        self.put_pixel(x_center-x, y_center-y)
+        # Decision parameter of region 1
+        d1 = (b * b) - (a * a * b) + (0.25 * a * a)
+        dx = 2 * b * b * x
+        dy = 2 * a * a * y
 
-        p=b*b-a*a*b-a*a/4
-        midb=round(m.pow(a,2)/m.sqrt(m.pow(a,2)+m.pow(b,2)))
+        # For region 1
+        while dx < dy:
+            # Add the points corresponding to the 4 quadrants
+            self.put_pixel(xc+x, yc+y)
+            self.put_pixel(xc-x, yc+y)
+            self.put_pixel(xc+x, yc-y)
+            self.put_pixel(xc-x, yc-y)
+            if d1 < 0:
+                x += 1
+                dx = dx + (2 * b * b)
+                d1 = d1 + dx + (b * b)
+            else:
+                x += 1
+                y -= 1
+                dx = dx + (2 * b * b)
+                dy = dy - (2 * a * a)
+                d1 = d1 + dx - dy + (b * b)    
 
-        while fx<fy: #nửa đầu
-            x+=1
-            fx+=2*b*b
-            if (p<0):
-                p += b*b*(2*x+3)
+            # Decision parameter of region 2
+        d2 = ((b * b) * ((x + 0.5) * (x + 0.5))) + ((a * a) * ((y - 1) * (y - 1))) - (a * a * b * b)
+
+        # For region 2
+        while y >= 0:
+            # Add the points corresponding to the 4 quadrants
+            self.put_pixel(xc+x, yc+y)
+            self.put_pixel(xc-x, yc+y)
+            self.put_pixel(xc+x, yc-y)
+            self.put_pixel(xc-x, yc-y)
+
+            if d2 > 0:
+                y -= 1
+                dy = dy - (2 * a * a)
+                d2 = d2 + (a * a) - dy
             else:
                 y -= 1
-                p += b*b*(2*x+3)+a*a*(-2*y+2)
-                fy -= 2*a*a
-            self.put_pixel(x_center+x, y_center+y)
-            self.put_pixel(x_center-x, y_center+y)
-            self.put_pixel(x_center+x, y_center-y)
-            self.put_pixel(x_center-x, y_center-y)
-
-        while y>0:
-            y -= 1
-            fy -= 2*a*a
-            if p >= 0:
-                p += a*a*(3-2*y)
-            else:
-                x +=1
-                fx += 2*b*b
-                p += b*b*(2*x+2)+a*a*(-2*y+3)
-            self.put_pixel(x_center+x, y_center+y)
-            self.put_pixel(x_center-x, y_center+y)
-            self.put_pixel(x_center+x, y_center-y)
-            self.put_pixel(x_center-x, y_center-y)
+                x += 1
+                dx = dx + (2 * b * b)
+                dy = dy - (2 * a * a)
+                d2 = d2 + dx - dy + (a * a)
 
     def tinh_tien(self, pos, delta_x, delta_y):
 

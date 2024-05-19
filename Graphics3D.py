@@ -15,11 +15,9 @@ class Graphics3D(Frame):
         self.create_grid_pixel_3D()
         self.create_menu3d()
 
-
     def create_menu3d(self):
         self.lbf_HHCN=LabelFrame(self, text="Vẽ hình hộp chữ nhật",width=200, height=300, relief="ridge")
         self.lbf_HHCN.pack()
-
 
         self.lb_chieuDai_HHCN=Label(self.lbf_HHCN, text='Chiều dài:')
         self.lb_chieuDai_HHCN.grid(column=0, row=0)
@@ -80,20 +78,33 @@ class Graphics3D(Frame):
 
         self.value_tamdayx_HT=Entry(self.lbf_HT)
         self.value_tamdayx_HT.grid(column=1, row=3)
-
+        self.value_tamdayx_HT.insert(0, "60")
+        
         self.value_tamdayy_HT=Entry(self.lbf_HT)
         self.value_tamdayy_HT.grid(column=2, row=3)
+        self.value_tamdayy_HT.insert(0, "0")
 
         self.value_tamdayz_HT=Entry(self.lbf_HT)
-        self.value_tamdayz_HT.grid(column=3, row=3)        
-        self.btn_HT=Button(self.lbf_HT, text="Vẽ hình trụ")
+        self.value_tamdayz_HT.grid(column=3, row=3)  
+        self.value_tamdayz_HT.insert(0, "60")      
+        
+        self.btn_HT = Button(
+            self.lbf_HT,
+            text="Vẽ hình trụ",
+            command=lambda: self.draw_cylinder(
+                int(self.value_tamdayx_HT.get()),
+                int(self.value_tamdayy_HT.get()),
+                int(self.value_tamdayz_HT.get()),
+                int(self.value_bankinh_HT.get()),
+                int(self.value_chieuCao_HT.get()),
+            ),
+        )
         self.btn_HT.grid(column=2, row=4)
-
 
         # CLEAR CANVAS
         self.clear_button = Button(self, text="Xóa Hình Vẽ", command=self.clear_canvas)
         self.clear_button.pack()
-        
+
     def clear_canvas(self):
         # Xóa tất cả các hình vẽ trên Canvas
         # self.canvas.pack_forget()
@@ -103,11 +114,11 @@ class Graphics3D(Frame):
             widget.pack_forget()
         self.create_canvas()
         self.create_grid_pixel_3D()
-        
+
     def create_frame(self):
         self.frame=Frame(self, width=self.width, height=self.height)
         self.frame.pack(side=LEFT)
-        
+
     def create_canvas(self):
         canvas = Canvas(self.frame, width=self.width, height=self.height, bg="#FEFAF6")
         self.canvas=canvas
@@ -204,6 +215,38 @@ class Graphics3D(Frame):
     #     y_prime = z - y*(sqrt(2)/4)
     #     return round(x_prime), round(y_prime)
 
+    def draw_cylinder(self, x, y, z, r, h):
+        # hinh tron ben duoi (elip)
+        p0 = self.cabinet_projection(x, y, z)
+        p1 = self.cabinet_projection(x, y, z + r)
+        p2 = self.cabinet_projection(x + r, y, z)
+        p3 = self.cabinet_projection(x - r, y, z)
+
+        # hinh tron ben tren (elip)
+        p4 = self.cabinet_projection(x, y + h, z)
+        p5 = self.cabinet_projection(x, y + h, z + r)
+        p6 = self.cabinet_projection(x + r, y + h, z)
+        p7 = self.cabinet_projection(x - r, y + h, z)
+
+        r1=self.calculate_distance(p0,p1)
+        r2=self.calculate_distance(p0,p2)
+        self.draw_ellipse(p0[0], p0[1], r2, r1)
+        self.draw_ellipse(p4[0], p4[1], r2, r1)
+        self.draw_line(p2, p6)
+        self.draw_line(p3, p7)
+
+        # 2 Tâm của hình trụ
+        self.put_pixel(p4[0], p4[1], "red")
+        self.put_pixel(p0[0], p0[1], "red")
+
+    def calculate_distance(self, p1,p2):
+        x1=p1[0]
+        y1=p1[1]
+        x2=p2[0]
+        y2=p2[1]
+        distance = sqrt((x2 - x1)**2 + (y2 - y1)**2)
+        return distance
+
     #       VẼ HÌNH HỘP CHỮ NHẬT
     def draw_rectangular(self, x, y, z, chieuDai, chieuRong, chieuCao):
         p1 = self.cabinet_projection(x, y, z)
@@ -263,47 +306,51 @@ class Graphics3D(Frame):
 
             iterations += 1
 
-    def draw_ellipse(self, x_center, y_center, a, b):
-        # self.put_pixel()
+    def draw_ellipse(self, xc, yc, a, b):
         x = 0
         y = b
-        # a2=a*a
-        # b2=b*b
-        fx=0
-        fy=2*a*a*y
 
-        self.put_pixel(x_center+x, y_center+y)
-        self.put_pixel(x_center-x, y_center+y)
-        self.put_pixel(x_center+x, y_center-y)
-        self.put_pixel(x_center-x, y_center-y)
+        # Decision parameter of region 1
+        d1 = (b * b) - (a * a * b) + (0.25 * a * a)
+        dx = 2 * b * b * x
+        dy = 2 * a * a * y
 
-        p=b*b-a*a*b-a*a/4
-        midb=round(pow(a,2)/sqrt(pow(a,2)+pow(b,2)))
+        # For region 1
+        while dx < dy:
+            # Add the points corresponding to the 4 quadrants
+            self.put_pixel(xc+x, yc+y)
+            self.put_pixel(xc-x, yc+y)
+            self.put_pixel(xc+x, yc-y)
+            self.put_pixel(xc-x, yc-y)
+            if d1 < 0:
+                x += 1
+                dx = dx + (2 * b * b)
+                d1 = d1 + dx + (b * b)
+            else:
+                x += 1
+                y -= 1
+                dx = dx + (2 * b * b)
+                dy = dy - (2 * a * a)
+                d1 = d1 + dx - dy + (b * b)    
 
-        while fx<fy: #nửa đầu
-            x+=1
-            fx+=2*b*b
-            if (p<0):
-                p += b*b*(2*x+3)
+            # Decision parameter of region 2
+        d2 = ((b * b) * ((x + 0.5) * (x + 0.5))) + ((a * a) * ((y - 1) * (y - 1))) - (a * a * b * b)
+
+        # For region 2
+        while y >= 0:
+            # Add the points corresponding to the 4 quadrants
+            self.put_pixel(xc+x, yc+y)
+            self.put_pixel(xc-x, yc+y)
+            self.put_pixel(xc+x, yc-y)
+            self.put_pixel(xc-x, yc-y)
+
+            if d2 > 0:
+                y -= 1
+                dy = dy - (2 * a * a)
+                d2 = d2 + (a * a) - dy
             else:
                 y -= 1
-                p += b*b*(2*x+3)+a*a*(-2*y+2)
-                fy -= 2*a*a
-            self.put_pixel(x_center+x, y_center+y)
-            self.put_pixel(x_center-x, y_center+y)
-            self.put_pixel(x_center+x, y_center-y)
-            self.put_pixel(x_center-x, y_center-y)
-
-        while y>0:
-            y -= 1
-            fy -= 2*a*a
-            if p >= 0:
-                p += a*a*(3-2*y)
-            else:
-                x +=1
-                fx += 2*b*b
-                p += b*b*(2*x+2)+a*a*(-2*y+3)
-            self.put_pixel(x_center+x, y_center+y)
-            self.put_pixel(x_center-x, y_center+y)
-            self.put_pixel(x_center+x, y_center-y)
-            self.put_pixel(x_center-x, y_center-y)
+                x += 1
+                dx = dx + (2 * b * b)
+                dy = dy - (2 * a * a)
+                d2 = d2 + dx - dy + (a * a)
