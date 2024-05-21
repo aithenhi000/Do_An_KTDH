@@ -13,11 +13,12 @@ class Application(Tk):
         self.geometry(f"{self.width}x{self.height}")
         self.create_taskbar()
         self.state("zoomed")
+        self.show_home_page()
 
     
     def create_taskbar(self):
         # Tạo thanh taskbar
-        button_font = ("Arial", 10, "bold")
+        button_font = ("Courier", 10, "bold")
         self.taskbar_frame = Frame(self, bg="lightgray", height=50)
         self.taskbar_frame.pack(fill="both")
 
@@ -33,22 +34,17 @@ class Application(Tk):
         # Tạo button 3D
         self.button_3d = Button(self.taskbar_frame, text="GRAPHICS 3D", command=self.show_3d_application, font=button_font,bg='#4793AF')
         self.button_3d.pack(side="left", padx=5)
-        
-        self.close_button = Button(self.taskbar_frame, text="Close App", command=self.close_app, bg='#8B322C', fg='white',font=button_font)
-        self.close_button.pack(side="right", padx=5)
 
-        self.lb_title=Label(self.taskbar_frame, text="Đồ án kỹ thuật đồ họa", bg="lightgray", font=("Arial", 16, "bold"))
-        self.lb_title.pack(side="left", padx=200)
+
+        self.lb_title=Label(self.taskbar_frame, text="", bg="lightgray", font=("Courier", 16, "bold"))
+        self.lb_title.pack(side="left", padx=300)
         
-    def close_app(self):
-        confirm = messagebox.askyesno("Close Confirmation", "Are you sure you want to close the application?")
-        if confirm:
-            self.destroy()
+
             
     def show_home_page(self):
         self.clear_application()
         self.home = Home(master=self, width=self.width, height=self.height)
-        self.lb_title.config(text='Kỹ thuật đồ họa')
+        self.lb_title.config(text='ĐỒ ÁN KỸ THUẬT ĐỒ HỌA')
         self.home.pack()
         
     
