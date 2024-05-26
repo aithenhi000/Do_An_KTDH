@@ -59,7 +59,7 @@ class Application(Tk):
     def show_3d_application(self):
         self.clear_application()
         self.lb_title.config(text='GIAO DIỆN ĐỒ HỌA 3D')
-        self.app_3d = Graphics3D(master=self)
+        self.app_3d = Graphics3D(master=self, width=self.width, height=self.height)
         self.app_3d.pack()
 
     def clear_application(self):
