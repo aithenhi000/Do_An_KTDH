@@ -81,7 +81,7 @@ class Graphics2D(Frame):
 
     def draw_sailboat(self, x0, y0):
 
-        self.tria_body_left, self.tria_body_left_id = self.draw_right_triangle(x0, y0, -10, -10)
+        self.tria_body_left, self.tria_body_left_id = self.draw_right_triangle(x0, y0, -10, -10, color="red")
                
         self.tria_body_right, self.tria_body_right_id = self.draw_right_triangle(x0+30, y0, 10, -10)
 
@@ -184,7 +184,7 @@ class Graphics2D(Frame):
         return pixel_id
 
     
-    def draw_line(self, x1, y1, x2, y2):
+    def draw_line(self, x1, y1, x2, y2, color="green"):
         arr=[]
         x1=round(x1)
         y1=round(y1)
@@ -206,7 +206,7 @@ class Graphics2D(Frame):
                 else:
                     p += f1
                     y += y_step
-                arr.append(self.put_pixel(x,y))
+                arr.append(self.put_pixel(x,y, color))
         else:
             p=2*dx-dy
             f1 = 2 * (dx - dy)
@@ -297,21 +297,21 @@ class Graphics2D(Frame):
         for point in points:
             self.put_pixel(point[0], point[1])
 
-    def draw_rectangle(self, x1, y1, x2, y2):
+    def draw_rectangle(self, x1, y1, x2, y2, color="green"):
 
         arr=self.draw_line(x1, y1, x2, y1)
-        arr.extend(self.draw_line(x2, y1, x2, y2))
-        arr.extend(self.draw_line(x2, y2, x1, y2))
-        arr.extend(self.draw_line(x1, y2, x1, y1))
+        arr.extend(self.draw_line(x2, y1, x2, y2, color))
+        arr.extend(self.draw_line(x2, y2, x1, y2, color))
+        arr.extend(self.draw_line(x1, y2, x1, y1, color))
         return np.array(([x1,y1,1], [x2,y2,1])), arr
 
-    def draw_triangle(self, x1, y1, x2, y2, x3, y3):
-        arr=self.draw_line(x1, y1, x2, y2)
-        arr.extend(self.draw_line(x2, y2, x3, y3))
-        arr.extend(self.draw_line(x3, y3, x1, y1))
+    def draw_triangle(self, x1, y1, x2, y2, x3, y3, color="green"):
+        arr=self.draw_line(x1, y1, x2, y2, color)
+        arr.extend(self.draw_line(x2, y2, x3, y3, color))
+        arr.extend(self.draw_line(x3, y3, x1, y1, color))
         return np.array(([x1,y1,1],[x2,y2,1],[x3,y3,1])), arr
 
-    def draw_isosceles_triangle(self, x1, y1, base, height):
+    def draw_isosceles_triangle(self, x1, y1, base, height, color="green"):
         # Tính toán tọa độ của các đỉnh của tam giác cân
         x2 = x1 + base
         y2 = y1
@@ -319,12 +319,12 @@ class Graphics2D(Frame):
         y3 = y1 + height
 
         # Vẽ các cạnh của tam giác
-        arr=self.draw_line(x1, y1, x2, y2)  # Cạnh đáy
-        arr.extend(self.draw_line(x2, y2, x3, y3))  # Cạnh bên
-        arr.extend(self.draw_line(x1, y1, x3, y3))  # Cạnh bên
+        arr=self.draw_line(x1, y1, x2, y2, color)  # Cạnh đáy
+        arr.extend(self.draw_line(x2, y2, x3, y3, color))  # Cạnh bên
+        arr.extend(self.draw_line(x1, y1, x3, y3, color))  # Cạnh bên
         return np.array(([x1,y1,1],[x2,y2,1],[x3,y3,1])), arr
 
-    def draw_right_triangle(self, x1, y1, base, height):
+    def draw_right_triangle(self, x1, y1, base, height, color="green"):
         x2 = x1 + base
         y2 = y1
         x3 = x1
@@ -332,12 +332,12 @@ class Graphics2D(Frame):
 
         # Vẽ các cạnh của tam giác
         pixel_ids = []
-        arr=self.draw_line( x1, y1, x2, y2)  # Cạnh đáy
-        arr.extend(self.draw_line(x2, y2, x3, y3))  # Cạnh kề
-        arr.extend(self.draw_line(x3, y3, x1, y1))  # Cạnh huyền
+        arr=self.draw_line( x1, y1, x2, y2, color)  # Cạnh đáy
+        arr.extend(self.draw_line(x2, y2, x3, y3, color))  # Cạnh kề
+        arr.extend(self.draw_line(x3, y3, x1, y1, color))  # Cạnh huyền
         return np.array(([x1,y1,1],[x2,y2,1],[x3,y3,1])), arr#, pixel_ids
         
-    def draw_ellipse(self, xc, yc, a, b):
+    def draw_ellipse(self, xc, yc, a, b, color="green"):
         x = 0
         y = b
 
@@ -349,10 +349,10 @@ class Graphics2D(Frame):
         # For region 1
         while dx < dy:
             # Add the points corresponding to the 4 quadrants
-            self.put_pixel(xc+x, yc+y)
-            self.put_pixel(xc-x, yc+y)
-            self.put_pixel(xc+x, yc-y)
-            self.put_pixel(xc-x, yc-y)
+            self.put_pixel(xc+x, yc+y, color)
+            self.put_pixel(xc-x, yc+y, color)
+            self.put_pixel(xc+x, yc-y, color)
+            self.put_pixel(xc-x, yc-y, color)
             if d1 < 0:
                 x += 1
                 dx = dx + (2 * b * b)
@@ -370,10 +370,10 @@ class Graphics2D(Frame):
         # For region 2
         while y >= 0:
             # Add the points corresponding to the 4 quadrants
-            self.put_pixel(xc+x, yc+y)
-            self.put_pixel(xc-x, yc+y)
-            self.put_pixel(xc+x, yc-y)
-            self.put_pixel(xc-x, yc-y)
+            self.put_pixel(xc+x, yc+y, color)
+            self.put_pixel(xc-x, yc+y, color)
+            self.put_pixel(xc+x, yc-y, color)
+            self.put_pixel(xc-x, yc-y, color)
 
             if d2 > 0:
                 y -= 1
