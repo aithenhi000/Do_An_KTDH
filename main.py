@@ -9,7 +9,7 @@ class Application(Tk):
         self.width=1500
         self.height=750
         self.title("ĐỒ ÁN KỸ THUẬT ĐỒ HỌA")
-        self.iconbitmap('Do_An_KTDH\\icon_app.ico')
+        #self.iconbitmap('icon_app.ico')
         self.geometry(f"{self.width}x{self.height}")
         self.create_taskbar()
         self.state("zoomed")
