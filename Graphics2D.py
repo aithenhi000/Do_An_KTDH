@@ -6,6 +6,8 @@ import numpy as np
 class Graphics2D(Frame):
     def __init__(self, master):
         super().__init__(master)
+        self.font_famiy=("Courier",9)
+        self.font_heading=("Courier",11, "bold")
         self.width=1200
         self.height=750
         self.grid_size = 5
@@ -15,23 +17,33 @@ class Graphics2D(Frame):
         self.create_grid_pixel()
         self.create_menu()
         self.create_info_panel()
+        self.flag_axis=0
+        
 
     def create_menu(self):
         self.btn_draw_2d = Button(
-            self, text="Vẽ cảnh 2D", bg='#FFC470', font=("Arial", 12, "bold"), command=self.draw_2d_main
+            self, text="VẼ CẢNH BIỂN 2D", bg='#FFC470', font=self.font_heading, command=self.draw_2d_main
         )
         self.btn_draw_2d.pack()
         self.btn_move_2d = Button(
-            self, text="Chuyển động vật thể",bg='#FFC470', font=("Arial", 12, "bold"), command=self.move_2d
+            self, text="CHUYỂN ĐỘNG",bg='#FFC470', font=self.font_heading, command=self.move_2d
         )
         self.btn_move_2d.pack()
+        self.btn_stop = Button(
+            self, text="DỪNG LẠI", bg='#FFC470', font=self.font_heading
+        )
+        self.btn_stop.pack()
+        self.btn_grid = Button(
+            self, text="BẬT/TẮT GRID PIXEL", bg='#FFC470', font=self.font_heading, command=self.create_axis
+        )
+        self.btn_grid.pack()
 
     def create_info_panel(self):
         self.fr=LabelFrame(self, text='THÔNG TIN VẬT THỂ DI CHUYỂN',borderwidth=2, relief="ridge", width=200, height=100)
         self.fr.pack()
 
-    def start_moving_2d(self):
-        self.move_2d()
+    # def start_moving_2d(self):
+    #     self.move_2d()
         
     def move_2d(self):
         '''
@@ -150,32 +162,43 @@ class Graphics2D(Frame):
             canvas.create_line(x, 0, x, self.height, fill="#EADBC8")
         for y in range(0, self.height, self.grid_size):
             canvas.create_line(0, y, self.width, y, fill="#EADBC8")
+            
 
-        # X axis
-        canvas.create_line(0, self.origin[1], self.width, self.origin[1])
-        for x in range(0, self.width, 50):
-            canvas.create_rectangle(
-                x - 1, self.origin[1] - 1, x + 1, self.origin[1] + 1, fill="red"
-            )
-            canvas.create_text(
-                x,
-                self.origin[1] + 8,
-                text=str(int((x - self.width / 2) / 5)),
-                font=("Arial", 7),
-            )
+    def create_axis(self):
+        canvas=self.canvas 
+        if self.flag_axis==1:
+            self.flag_axis-=1
+            self.canvas.delete(*self.arr)
+            
+        else:
+            self.flag_axis+=1
+            self.arr=[]
 
-        # Y axis
-        canvas.create_line(self.origin[0], 0, self.origin[0], self.height)
-        for y in range(0, self.height, 50):
-            canvas.create_rectangle(
-                self.origin[0] - 1, y - 1, self.origin[0] + 1, y + 1, fill="red"
-            )
-            canvas.create_text(
-                self.origin[0] + 9,
-                y,
-                text=str(int(-(y - self.height / 2) / 5)),
-                font=("Arial", 7),
-            )
+            # X axis
+            self.arr.append(canvas.create_line(0, self.origin[1], self.width, self.origin[1]))
+            for x in range(0, self.width, 50):
+                self.arr.append(canvas.create_rectangle(
+                    x - 1, self.origin[1] - 1, x + 1, self.origin[1] + 1, fill="red"
+                ))
+                self.arr.append(canvas.create_text(
+                    x,
+                    self.origin[1] + 8,
+                    text=str(int((x - self.width / 2) / 5)),
+                    font=("Arial", 7),
+                ))
+            # Y axis
+            self.arr.append(canvas.create_line(self.origin[0], 0, self.origin[0], self.height))
+            for y in range(0, self.height, 50):
+                self.arr.append(canvas.create_rectangle(
+                    self.origin[0] - 1, y - 1, self.origin[0] + 1, y + 1, fill="red"
+                ))
+                self.arr.append(canvas.create_text(
+                    self.origin[0] + 9,
+                    y,
+                    text=str(int(-(y - self.height / 2) / 5)),
+                    font=("Arial", 7),
+                ))
+        
 
     def put_pixel(self, x, y, color="green"):
         adjusted_x = self.width/2 + x*5
@@ -346,13 +369,14 @@ class Graphics2D(Frame):
         dx = 2 * b * b * x
         dy = 2 * a * a * y
 
+        arr=[]
         # For region 1
         while dx < dy:
             # Add the points corresponding to the 4 quadrants
-            self.put_pixel(xc+x, yc+y, color)
-            self.put_pixel(xc-x, yc+y, color)
-            self.put_pixel(xc+x, yc-y, color)
-            self.put_pixel(xc-x, yc-y, color)
+            arr.append(self.put_pixel(xc+x, yc+y, color))
+            arr.append(self.put_pixel(xc-x, yc+y, color))
+            arr.append(self.put_pixel(xc+x, yc-y, color))
+            arr.append(self.put_pixel(xc-x, yc-y, color))
             if d1 < 0:
                 x += 1
                 dx = dx + (2 * b * b)
@@ -370,10 +394,10 @@ class Graphics2D(Frame):
         # For region 2
         while y >= 0:
             # Add the points corresponding to the 4 quadrants
-            self.put_pixel(xc+x, yc+y, color)
-            self.put_pixel(xc-x, yc+y, color)
-            self.put_pixel(xc+x, yc-y, color)
-            self.put_pixel(xc-x, yc-y, color)
+            arr.append(self.put_pixel(xc+x, yc+y, color))
+            arr.append(self.put_pixel(xc-x, yc+y, color))
+            arr.append(self.put_pixel(xc+x, yc-y, color))
+            arr.append(self.put_pixel(xc-x, yc-y, color))
 
             if d2 > 0:
                 y -= 1
@@ -385,6 +409,7 @@ class Graphics2D(Frame):
                 dx = dx + (2 * b * b)
                 dy = dy - (2 * a * a)
                 d2 = d2 + dx - dy + (a * a)
+        return np.array(([xc,yc,1])), a, b, arr
 
     def tinh_tien(self, pos, delta_x, delta_y):
 

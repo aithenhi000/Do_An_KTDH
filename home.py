@@ -14,8 +14,8 @@ class Home(Frame):
         self.create_canvas()
         self.create_grid_pixel()
         self.write_name()
-        self.create_circle()
-        self.move_circle()
+        #self.create_circle()
+        #self.move_circle()
         
     def tinh_tien(self, pos, delta_x, delta_y):
 
@@ -43,7 +43,7 @@ class Home(Frame):
     def write_name(self):
         center_x = self.width // 2
         center_y = self.height // 2
-        text = "THÀNH VIÊN\nPhan Hữu Thiên Phúc - N21DCPT075\nNguyễn Hoàng Khánh - N21DCPT038\n Phạm Nhật Ánh - N21DCPT007\n Lê Huy Hoàng - N21DCPT027\n Nguyễn Nhật Quang - N19DCPT055"
+        text = "THÀNH VIÊN\nPhan Hữu Thiên Phúc - N21DCPT075\nNguyễn Hoàng Khánh - N21DCPT038\n Phạm Nhật Ánh - N21DCPT007\n Lê Huy Hoàng - N21DCPT027\n Nguyễn Nhật Quang - N19DCPT055\n Nguyễn Viết Khang - N..DCPT..."
         text_id = self.canvas.create_text(center_x, center_y, text=text, font=("Courier", 14), justify="center")
         
     def create_canvas(self):
