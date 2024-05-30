@@ -35,7 +35,7 @@ class Application(Tk):
 
         self.lb_title=Label(self.taskbar_frame, text="", bg="lightgray", font=("Courier", 16, "bold"))
         self.lb_title.pack(side="left", padx=300)
-        
+
                  
     def show_home_page(self):
         self.clear_application()
@@ -58,7 +58,7 @@ class Application(Tk):
         self.lb_title.config(text='GIAO DIỆN ĐỒ HỌA 3D')
         self.app_3d = Graphics3D(master=self)
         self.app_3d.pack()
-        
+           
 
     def clear_application(self):
         for widget in self.winfo_children():
