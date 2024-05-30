@@ -15,7 +15,6 @@ class Application(Tk):
         self.state("zoomed")
         self.show_home_page()
         
-    
     def create_taskbar(self):
         # Tạo thanh taskbar
         button_font = ("Courier", 10, "bold")
