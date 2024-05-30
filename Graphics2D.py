@@ -18,6 +18,7 @@ class Graphics2D(Frame):
 
         ###
         self.moving_check = False
+    
     def create_menu(self):
         self.btn_draw_2d = Button(
             self, text="Vẽ cảnh 2D", bg='#FFC470', font=("Arial", 12, "bold"), command=self.draw_2d_main
@@ -101,6 +102,7 @@ class Graphics2D(Frame):
         self.tria_sail_left, self.tria_sail_left_id = self.draw_right_triangle(x0+14, y0+5, -10, 20)
         self.tria_sail_right, self.tria_sail_right_id= self.draw_right_triangle(x0+16, y0+5, 10, 30)
         pass
+
     def delete_sailboat(self, x0, y0):
         self.canvas.delete(*self.tria_body_left_id)
         self.canvas.delete(*self.tria_body_right_id)
@@ -109,6 +111,7 @@ class Graphics2D(Frame):
         self.canvas.delete(*self.tria_sail_right_id) #Xóa đi hình trước vẽ
         self.canvas.delete(*self.rec_body_id) #Xóa đi hình trước vẽ
         self.canvas.delete(*self.rec_sail_id) #Xóa đi hình trước vẽ
+
     def sailboat(self, x0, y0):
         self.delete_sailboat( x0, y0)
         self.draw_sailboat(x0, y0)
@@ -204,7 +207,6 @@ class Graphics2D(Frame):
         adjusted_y = self.height/2 - y*5
         pixel_id=self.canvas.create_rectangle(adjusted_x-2, adjusted_y-2, adjusted_x+2, adjusted_y+2, fill=color, outline=None)
         return pixel_id
-
     
     def draw_line(self, x1, y1, x2, y2):
         arr=[]
@@ -319,12 +321,12 @@ class Graphics2D(Frame):
         for point in points:
             self.put_pixel(point[0], point[1])
 
-    def draw_rectangle(self, x1, y1, x2, y2):
-
+    def draw_rectangle(self, x1, y1, x2, y2, bool_left_right=1):
         arr=self.draw_line(x1, y1, x2, y1)
         arr.extend(self.draw_line(x2, y1, x2, y2))
-        arr.extend(self.draw_line(x2, y2, x1, y2))
-        arr.extend(self.draw_line(x1, y2, x1, y1))
+        if bool_left_right==1:
+            arr.extend(self.draw_line(x2, y2, x1, y2))
+            arr.extend(self.draw_line(x1, y2, x1, y1))
         return np.array(([x1,y1,1], [x2,y2,1])), arr
 
     def draw_triangle(self, x1, y1, x2, y2, x3, y3):
