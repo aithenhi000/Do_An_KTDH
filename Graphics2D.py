@@ -102,6 +102,7 @@ class Graphics2D(Frame):
         self.tria_sail_right, self.tria_sail_right_id, self.tria_sail_right_fill_id = self.draw_right_triangle(x0+16, y0+5, 10, 30, fill_direction='down')
         pass
         
+    #list vật thể
     def draw_2d_main(self):
         self.clear_canvas()
     
@@ -110,8 +111,10 @@ class Graphics2D(Frame):
         self.draw_bird1(-100, 65)
         self.draw_bird2(-80, 55)
         self.draw_bird3(-35, 70)
-        self.draw_sea(-120,0)
+        self.canvas.create_rectangle(-120, 0, 120, -70, fill='blue', outline='blue')
+        self.draw_sea(-120, 0, 120, -70)
         self.draw_sailboat(-110, -40)
+        
             
     def create_canvas(self):
         self.canvas = Canvas(self, width=self.width, height=self.height, bg="#FEFAF6")
@@ -521,6 +524,9 @@ class Graphics2D(Frame):
         self.draw_ellipse(-102 + 65, 63 + 5, 1, 0)
         self.draw_ellipse(-94 + 65, 63 + 5, 1, 0)
    
-    def draw_sea(self, x0, y0):
-        bottom_screen = -70
-        self.draw_line_background(x0,y0,120,0,direction='down',draw_to=bottom_screen, color='light blue')
+    def draw_sea(self, x1, y1, x2, y2):
+        adjusted_x1 = self.width/2 + x1*5
+        adjusted_y1 = self.height/2 - y1*5
+        adjusted_x2 = self.width/2 + x2*5
+        adjusted_y2 = self.height/2 - y2*5
+        self.canvas.create_rectangle(adjusted_x1, adjusted_y1, adjusted_x2, adjusted_y2, fill='blue', outline='blue')
