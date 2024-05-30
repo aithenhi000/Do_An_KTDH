@@ -29,7 +29,6 @@ class Graphics2D(Frame):
         )
         self.btn_draw_2d.pack()
         self.btn_move_2d = Button(
-<<<<<<< HEAD
             self, text="CHUYỂN ĐỘNG",bg='#FFC470', font=self.font_heading, command=self.move_2d
         )
         self.btn_move_2d.pack()
@@ -42,12 +41,6 @@ class Graphics2D(Frame):
         )
         self.btn_grid.pack()
 
-=======
-            self, text="Chuyển động vật thể",bg='#FFC470', font=("Arial", 12, "bold"), command=self.moving_button
-        )
-        self.btn_move_2d.pack()
-        
->>>>>>> 5ed6fa171e937f1623b8fce7e274a26872b07afa
     def create_info_panel(self):
         self.fr=LabelFrame(self, text='THÔNG TIN VẬT THỂ DI CHUYỂN',borderwidth=2, relief="ridge", width=200, height=100)
         self.fr.pack()
@@ -57,12 +50,9 @@ class Graphics2D(Frame):
         if self.moving_check:
             self.move_2d()  # Nếu moving_check là True, bắt đầu di chuyển
 
-<<<<<<< HEAD
     # def start_moving_2d(self):
     #     self.move_2d()
         
-=======
->>>>>>> 5ed6fa171e937f1623b8fce7e274a26872b07afa
     def move_2d(self):
         #self.moving_check = True
         #if self.moving_check:   #đặt flag moving_check kiểm tra xem có đang di chuyển không
@@ -121,7 +111,6 @@ class Graphics2D(Frame):
         #print(x, y)
 
     def draw_sailboat(self, x0, y0):
-<<<<<<< HEAD
 
         self.tria_body_left, self.tria_body_left_id = self.draw_right_triangle(x0, y0, -10, -10, color="red")
                
@@ -129,12 +118,6 @@ class Graphics2D(Frame):
 
         self.rec_body, self.rec_body_id = self.draw_rectangle (x0+30, y0, x0, y0-10)
 
-=======
-        self.tria_body_left, self.tria_body_left_id, self.tria_body_left_fill_id = self.draw_right_triangle(x0, y0, -10, -10, bool_canh_ke=0)
-        self.tria_body_right, self.tria_body_right_id, self.tria_body_right_fill_id = self.draw_right_triangle(x0+30, y0, 10, -10, bool_canh_ke=0)
-        self.rec_body, self.rec_body_id, self.rec_body_fill_id = self.draw_filled_rectangle (x0+30, y0, x0, y0-10, bool_left_right=0)
-        
->>>>>>> 5ed6fa171e937f1623b8fce7e274a26872b07afa
         self.rec_sail, self.rec_sail_id = self.draw_rectangle (x0+14 ,y0+5,x0+16, y0)
         self.tria_sail_left, self.tria_sail_left_id, self.tria_sail_left_fill_id = self.draw_right_triangle(x0+14, y0+5, -10, 20, fill_direction='down')
         self.tria_sail_right, self.tria_sail_right_id, self.tria_sail_right_fill_id = self.draw_right_triangle(x0+16, y0+5, 10, 30, fill_direction='down')
@@ -447,13 +430,13 @@ class Graphics2D(Frame):
         for point in points:
             self.put_pixel(point[0], point[1])
 
-<<<<<<< HEAD
     def draw_rectangle(self, x1, y1, x2, y2, color="green"):
 
         arr=self.draw_line(x1, y1, x2, y1)
         arr.extend(self.draw_line(x2, y1, x2, y2, color))
         arr.extend(self.draw_line(x2, y2, x1, y2, color))
         arr.extend(self.draw_line(x1, y2, x1, y1, color))
+<<<<<<< Updated upstream
 =======
     def draw_filled_rectangle(self, x1, y1, x2, y2, bool_left_right=1):
         arr, arr_fill=self.draw_line_background(x1, y1, x2, y1, 'down', y2)
@@ -473,6 +456,8 @@ class Graphics2D(Frame):
         arr.extend(self.draw_line(x2, y2, x1, y2))
         arr.extend(self.draw_line(x1, y2, x1, y1))
 >>>>>>> 5ed6fa171e937f1623b8fce7e274a26872b07afa
+=======
+>>>>>>> Stashed changes
         return np.array(([x1,y1,1], [x2,y2,1])), arr
 
     def draw_triangle(self, x1, y1, x2, y2, x3, y3, color="green"):
@@ -494,23 +479,19 @@ class Graphics2D(Frame):
         arr.extend(self.draw_line(x1, y1, x3, y3, color))  # Cạnh bên
         return np.array(([x1,y1,1],[x2,y2,1],[x3,y3,1])), arr
 
-<<<<<<< HEAD
     def draw_right_triangle(self, x1, y1, base, height, color="green"):
-=======
-    def draw_right_triangle(self, x1, y1, base, height, fill_direction='up', bool_canh_ke=1):
->>>>>>> 5ed6fa171e937f1623b8fce7e274a26872b07afa
         x2 = x1 + base
         y2 = y1
         x3 = x1
         y3 = y1 + height
 
-<<<<<<< HEAD
         # Vẽ các cạnh của tam giác
         pixel_ids = []
         arr=self.draw_line( x1, y1, x2, y2, color)  # Cạnh đáy
         arr.extend(self.draw_line(x2, y2, x3, y3, color))  # Cạnh kề
         arr.extend(self.draw_line(x3, y3, x1, y1, color))  # Cạnh huyền
         return np.array(([x1,y1,1],[x2,y2,1],[x3,y3,1])), arr#, pixel_ids
+<<<<<<< Updated upstream
 =======
         arr, arr_fill=self.draw_line_background(x2, y2, x3, y3, fill_direction, y1)  # Cạnh huyền
         arr.extend(self.draw_line( x1, y1, x2, y2))  # Cạnh đáy
@@ -521,6 +502,8 @@ class Graphics2D(Frame):
             arr.append(self.put_pixel(x3,y3))
         return np.array(([x1,y1,1],[x2,y2,1],[x3,y3,1])), arr, arr_fill
 >>>>>>> 5ed6fa171e937f1623b8fce7e274a26872b07afa
+=======
+>>>>>>> Stashed changes
         
     def draw_ellipse(self, xc, yc, a, b, color="green"):
         x = 0
