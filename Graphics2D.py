@@ -46,26 +46,11 @@ class Graphics2D(Frame):
         self.moving_check = not self.moving_check  # Đảo ngược trạng thái của moving_check
         if self.moving_check:
             self.move_2d()  # Nếu moving_check là True, bắt đầu di chuyển
-
-    # def start_moving_2d(self):
-    #     self.move_2d()
         
     def move_2d(self):
         #self.moving_check = True
         #if self.moving_check:   #đặt flag moving_check kiểm tra xem có đang di chuyển không
-            
-        '''
-        self.rec1=self.tinh_tien(self.rec1, 5, 5)
-        self.rec1=self.ti_le(*self.rec1, 1.2)
-        self.rec1=self.xoay_goc_x_do(self.rec1, 30)
-            
-        self.canvas.delete(*self.rec1_id) #Xóa đi hình trước vẽ
-        self.rec1, self.rec1_id=self.draw_rectangle(self.rec1[0,0], self.rec1[0,1], self.rec1[1,0], self.rec1[1,1])
-
-        self.tria1=self.xoay_goc_x_do(self.tria1, 90)
-        self.canvas.delete(*self.tria1_id)
-        self.tria1, self.tria1_id=self.draw_triangle(self.tria1[0,0],self.tria1[0,1],self.tria1[1,0],self.tria1[1,1],self.tria1[2,0],self.tria1[2,1])
-        '''
+        
         if self.moving_check:
             
             self.tinh_tien_sailboat(1, 0)
@@ -116,67 +101,18 @@ class Graphics2D(Frame):
         self.tria_sail_left, self.tria_sail_left_id, self.tria_sail_left_fill_id = self.draw_right_triangle(x0+14, y0+5, -10, 20, fill_direction='down')
         self.tria_sail_right, self.tria_sail_right_id, self.tria_sail_right_fill_id = self.draw_right_triangle(x0+16, y0+5, 10, 30, fill_direction='down')
         pass
-
-    def delete_sailboat(self, x0, y0):
-        self.canvas.delete(*self.tria_body_left_id)
-        self.canvas.delete(*self.tria_body_right_id)
-        self.canvas.delete(*self.tria_sail_left_id)
-        self.canvas.delete(*self.tria_sail_right_id) #Xóa đi hình trước vẽ
-        self.canvas.delete(*self.tria_sail_right_id) #Xóa đi hình trước vẽ
-        self.canvas.delete(*self.rec_body_id) #Xóa đi hình trước vẽ
-        self.canvas.delete(*self.rec_sail_id) #Xóa đi hình trước vẽ
-
-    def sailboat(self, x0, y0):
-        self.delete_sailboat( x0, y0)
-        self.draw_sailboat(x0, y0)       
-##############bỏ
-    def draw_sailboat_fill(self):
-        #Điểm A(-30, -30)
-        x_a = -30
-        base_a = -10
-        self.triangles_body_left = []  # Danh sách để lưu trữ các tam giác
-        self.triangles_body_left_id = []  # Danh sách để lưu trữ các ID của tam giác
-
-        #tria_body_left
-        for value in range(x_a, -39, -1):
-            self.triangle, self.triangle_id = self.draw_right_triangle(x_a, x_a, base_a, base_a)
-            self.triangles_body_left.append(self.triangle)  # Thêm tam giác vào danh sách
-            self.triangles_body_left_id.append(self.triangle_id)  # Thêm ID của tam giác vào danh sách
-            base_a += 1
-            
-            if value == -38:
-                break
-
-        
-        for i in range(len(self.triangles_body_left)):
-            setattr(self, f"triangle_{i+1}", self.triangles_body_left[i])
-            setattr(self, f"triangle_{i+1}_id", self.triangles_body_left_id[i])
-        self.first_triangle = self.triangles_body_left[0]
-        self.first_triangle_id = self.triangles_body_left_id[0]
-        
-        self.rec_body, self.rec_body = self.draw_rectangle (0, -30, -30, -40)
-
-        self.rec_sail, self.rec_sail = self.draw_rectangle (-16 ,-25,-14, -30)
-
-        self.tria_sail_left, self.tria_sail_left_id = self.draw_right_triangle(-16, -25, -10, 20)
-        self.tria_sail_right, self.tria_sail_right_id= self.draw_right_triangle(-14, -25, 10, 30)
-        pass
         
     def draw_2d_main(self):
         self.clear_canvas()
-        self.rec1, self.rec1_id = self.draw_rectangle(1, 1, 10, 20)
-        self.tria1, self.tria1_id = self.draw_isosceles_triangle(50, 50, 30, 60)
-        '''
-        print(self.tria1)
-        print(self.tria1_id)
-        '''
-        
+    
+        self.draw_mountain(-110, 55)
+        self.draw_sun(40, 60)
+        self.draw_bird1(-100, 65)
+        self.draw_bird2(-80, 55)
+        self.draw_bird3(-35, 70)
+        self.draw_sea(-120,0)
         self.draw_sailboat(-110, -40)
-        #self.sailboat(-110,-30)
-        #self.pixel_id = self.put_pixel_stroke(x=70, y=70, width_stroke=3, f_color="red", o_color = "red")
-        
-##############################################################################
-        
+            
     def create_canvas(self):
         self.canvas = Canvas(self, width=self.width, height=self.height, bg="#FEFAF6")
         self.canvas.pack(side=LEFT)
@@ -189,7 +125,6 @@ class Graphics2D(Frame):
         for y in range(0, self.height, self.grid_size):
             canvas.create_line(0, y, self.width, y, fill="#EADBC8")
             
-
     def create_axis(self):
         canvas=self.canvas 
         if self.flag_axis==1:
@@ -225,7 +160,6 @@ class Graphics2D(Frame):
                     font=("Arial", 7),
                 ))
         
-
     def put_pixel(self, x, y, color="green", outline="black"):
         adjusted_x = self.width/2 + x*5
         adjusted_y = self.height/2 - y*5
@@ -269,7 +203,7 @@ class Graphics2D(Frame):
                 arr.append(self.put_pixel(x,y))
         return arr
       
-    def draw_line_background(self, x1, y1, x2, y2, direction, draw_to):
+    def draw_line_background(self, x1, y1, x2, y2, direction, draw_to, color='red'):
         arr=[]
         arr_fill=[]
         x1=round(x1)
@@ -295,22 +229,22 @@ class Graphics2D(Frame):
                     if direction=='right':
                         x_background=x+1
                         while(x_background<=draw_to-1):
-                            arr_fill.append(self.put_pixel(x_background,y,'red','red'))
+                            arr_fill.append(self.put_pixel(x_background,y,color,color))
                             x_background+=1
                     elif direction=='left':
                         x_background=x+1
                         while(x_background<=draw_to+1):
-                            arr_fill.append(self.put_pixel(x_background,y,'red','red'))
+                            arr_fill.append(self.put_pixel(x_background,y,color,color))
                             x_background-=1
                 if direction=='up':
                         y_background=y+1
                         while(y_background<=draw_to-1):
-                            arr_fill.append(self.put_pixel(x,y_background,'red','red'))
+                            arr_fill.append(self.put_pixel(x,y_background,color,color))
                             y_background+=1
                 elif direction=='down':
                     y_background=y-1
                     while(y_background>=draw_to+1):
-                        arr_fill.append(self.put_pixel(x,y_background,'red','red'))
+                        arr_fill.append(self.put_pixel(x,y_background,color,color))
                         y_background-=1
                 arr.append(self.put_pixel(x,y))
         else:
@@ -327,73 +261,27 @@ class Graphics2D(Frame):
                     if direction=='up':
                         y_background=y+1
                         while(y_background<=draw_to-1):
-                            arr_fill.append(self.put_pixel(x,y_background,'red','red'))
+                            arr_fill.append(self.put_pixel(x,y_background,color,color))
                             y_background+=1
                     elif direction=='down':
                         y_background=y-1
                         while(y_background>=draw_to+1):
-                            arr_fill.append(self.put_pixel(x,y_background,'red','red'))
+                            arr_fill.append(self.put_pixel(x,y_background,color,color))
                             y_background-=1
                 if direction=='right':
                     x_background=x+1
                     while(x_background<=draw_to-1):
-                        arr_fill.append(self.put_pixel(x_background,y,'red','red'))
+                        arr_fill.append(self.put_pixel(x_background,y,color,color))
                         x_background+=1
                 elif direction=='left':
                     x_background=x+1
                     while(x_background<=draw_to+1):
-                        arr_fill.append(self.put_pixel(x_background,y,'red','red'))
+                        arr_fill.append(self.put_pixel(x_background,y,color,color))
                         x_background-=1
                 arr.append(self.put_pixel(x,y))
                     
         return arr, arr_fill
     
-####3############
-    def put_pixel_stroke(self, x, y, width_stroke, f_color="green", o_color = "green"):
-        adjusted_x = self.width/2 + x*5
-        adjusted_y = self.height/2 - y*5
-        pixel_id = self.canvas.create_rectangle(adjusted_x-2, adjusted_y-2, adjusted_x+2, adjusted_y+2, fill=f_color, outline=o_color, width=width_stroke)
-        return pixel_id
-
-    def draw_line_stroke(self, x, y, x1, y1, x2, y2, f_color, o_color):
-        arr = []
-        x1 = round(x1)
-        y1 = round(y1)
-        x2 = round(x2)
-        y2 = round(y2)
-        dx = abs(x2 - x1)
-        dy = abs(y2 - y1)
-        x, y = x1, y1
-        x_step = 1 if x1 < x2 else -1
-        y_step = 1 if y1 < y2 else -1
-        f1 = 2 * (dy - dx)
-        f2 = 2 * dy
-        p = 2 * dy - dx
-        if dx > dy:
-            while x != x2:
-                x += x_step
-                if p < 0:
-                    p += f2
-                else:
-                    p += f1
-                    y += y_step
-                arr.append(self.put_pixel_stroke(x, y, o_color))
-        else:
-            p = 2 * dx - dy
-            f1 = 2 * (dx - dy)
-            f2 = 2 * dx
-            while y != y2:
-                y += y_step
-                if p < 0:
-                    p += f2
-                else:
-                    p += f1
-                    x += x_step
-                arr.append(self.put_pixel_stroke(x, y, o_color))
-
-        return arr
-
-################################3
     def draw_circle(self, x_center, y_center, radius):
         x = radius
         y = 0
@@ -432,6 +320,7 @@ class Graphics2D(Frame):
         arr.extend(self.draw_line(x1, y2, x1, y1, color))
 
         return np.array(([x1,y1,1], [x2,y2,1])), arr
+    
     def draw_filled_rectangle(self, x1, y1, x2, y2, bool_left_right=1):
         arr, arr_fill=self.draw_line_background(x1, y1, x2, y1, 'down', y2)
         arr.extend(self.draw_line(x2, y2, x1, y2))        
@@ -443,7 +332,6 @@ class Graphics2D(Frame):
             arr.append(self.put_pixel(x1,y2))
 
         return np.array(([x1,y1,1], [x2,y2,1])), arr, arr_fill
-
 
     def draw_triangle(self, x1, y1, x2, y2, x3, y3, color="green"):
         arr=self.draw_line(x1, y1, x2, y2, color)
@@ -478,8 +366,6 @@ class Graphics2D(Frame):
             arr.append(self.put_pixel(x1,y1))
             arr.append(self.put_pixel(x3,y3))
         return np.array(([x1,y1,1],[x2,y2,1],[x3,y3,1])), arr, arr_fill
-
-
         
     def draw_ellipse(self, xc, yc, a, b, color="green"):
         x = 0
@@ -570,3 +456,71 @@ class Graphics2D(Frame):
                 pos[x]=np.matmul(pos[x],mul_matrix)
 
         return pos
+
+    def draw_mountain(self, x0, y0):
+        truc_x = 0
+        self.draw_line_background(x0, y0, -100, 35, 'down', truc_x, color='green')
+        # self.draw_line(x0, y0, -100, 35)
+        self.draw_line_background(-100, 35, -60, 45, 'down', truc_x, color='green')
+        # self.draw_line(-100, 35, -60, 45)
+        self.draw_line_background(-120, 35, -110, 55, 'down', truc_x, color='green')
+        # self.draw_line(-120, 35, -110, 55)
+        self.draw_line_background(-60, 45, -10, 25, 'down', truc_x, color='green')
+        # self.draw_line(-60, 45, -10, 25)
+        self.draw_line_background(-10, 25, 30, 42, 'down', truc_x, color='green')
+        # self.draw_line(-10, 25, 30, 42)
+        self.draw_line_background(30, 42, 70, 25, 'down', truc_x, color='green')
+        # self.draw_line(30, 42, 70, 25)
+        self.draw_line_background(70, 25, 120, 68, 'down', truc_x, color='green')
+        # self.draw_line(70, 25, 120, 68)
+
+    def draw_sun(self, x0, y0):
+        self.draw_circle(x0, y0, 10)
+        self.draw_line(40, 71, 40, 73)
+        self.draw_line(51, 60, 53, 60)
+        self.draw_line(40, 48, 40, 46)
+        self.draw_line(29, 60, 27, 60)
+        self.draw_line(32, 67, 30, 69)
+        self.draw_line(48, 67, 50, 69)
+        self.draw_line(48, 50, 50, 48)
+        self.draw_line(32, 50, 30, 48)
+
+    def draw_bird1(self, x0, y0):
+        self.draw_ellipse(x0, y0, 1, 0)
+        self.draw_ellipse(-99, 65, 1, 0)
+        self.draw_ellipse(-98, 64, 1, 0)
+        self.draw_ellipse(-97, 65, 1, 0)
+        self.draw_ellipse(-96, 65, 1, 0)
+        self.draw_ellipse(-101, 64, 1, 0)
+        self.draw_ellipse(-95, 64, 1, 0)
+        self.draw_ellipse(-98, 63, 1, 0)
+        self.draw_ellipse(-102, 63, 1, 0)
+        self.draw_ellipse(-94, 63, 1, 0)
+
+    def draw_bird2(self, x0, y0):
+        self.draw_ellipse(x0, y0, 1, 0)
+        self.draw_ellipse(-99 + 20, 65 - 10, 1, 0)
+        self.draw_ellipse(-98 + 20, 64 - 10, 1, 0)
+        self.draw_ellipse(-97 + 20, 65 - 10, 1, 0)
+        self.draw_ellipse(-96 + 20, 65 - 10, 1, 0)
+        self.draw_ellipse(-101 + 20, 64 - 10, 1, 0)
+        self.draw_ellipse(-95 + 20, 64 - 10, 1, 0)
+        self.draw_ellipse(-98 + 20, 63 - 10, 1, 0)
+        self.draw_ellipse(-102 + 20, 63 - 10, 1, 0)
+        self.draw_ellipse(-94 + 20, 63 - 10, 1, 0)
+
+    def draw_bird3(self, x0, y0):
+        self.draw_ellipse(x0, y0, 1, 0)
+        self.draw_ellipse(-99 + 65, 65 + 5, 1, 0)
+        self.draw_ellipse(-98 + 65, 64 + 5, 1, 0)
+        self.draw_ellipse(-97 + 65, 65 + 5, 1, 0)
+        self.draw_ellipse(-96 + 65, 65 + 5, 1, 0)
+        self.draw_ellipse(-101 + 65, 64 + 5, 1, 0)
+        self.draw_ellipse(-95 + 65, 64 + 5, 1, 0)
+        self.draw_ellipse(-98 + 65, 63 + 5, 1, 0)
+        self.draw_ellipse(-102 + 65, 63 + 5, 1, 0)
+        self.draw_ellipse(-94 + 65, 63 + 5, 1, 0)
+   
+    def draw_sea(self, x0, y0):
+        bottom_screen = -70
+        self.draw_line_background(x0,y0,120,0,direction='down',draw_to=bottom_screen, color='light blue')
