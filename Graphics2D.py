@@ -16,29 +16,36 @@ class Graphics2D(Frame):
         self.create_menu()
         self.create_info_panel()
 
+        ###
+        self.moving_check = False
     def create_menu(self):
         self.btn_draw_2d = Button(
             self, text="Vẽ cảnh 2D", bg='#FFC470', font=("Arial", 12, "bold"), command=self.draw_2d_main
         )
         self.btn_draw_2d.pack()
         self.btn_move_2d = Button(
-            self, text="Chuyển động vật thể",bg='#FFC470', font=("Arial", 12, "bold"), command=self.move_2d
+            self, text="Chuyển động vật thể",bg='#FFC470', font=("Arial", 12, "bold"), command=self.moving_button
         )
         self.btn_move_2d.pack()
-
+        
     def create_info_panel(self):
         self.fr=LabelFrame(self, text='THÔNG TIN VẬT THỂ DI CHUYỂN',borderwidth=2, relief="ridge", width=200, height=100)
         self.fr.pack()
+    
+    def moving_button(self):
+        self.moving_check = not self.moving_check  # Đảo ngược trạng thái của moving_check
+        if self.moving_check:
+            self.move_2d()  # Nếu moving_check là True, bắt đầu di chuyển
 
-    def start_moving_2d(self):
-        self.move_2d()
-        
     def move_2d(self):
+        #self.moving_check = True
+        #if self.moving_check:   #đặt flag moving_check kiểm tra xem có đang di chuyển không
+            
         '''
         self.rec1=self.tinh_tien(self.rec1, 5, 5)
         self.rec1=self.ti_le(*self.rec1, 1.2)
         self.rec1=self.xoay_goc_x_do(self.rec1, 30)
-        
+            
         self.canvas.delete(*self.rec1_id) #Xóa đi hình trước vẽ
         self.rec1, self.rec1_id=self.draw_rectangle(self.rec1[0,0], self.rec1[0,1], self.rec1[1,0], self.rec1[1,1])
 
@@ -46,18 +53,21 @@ class Graphics2D(Frame):
         self.canvas.delete(*self.tria1_id)
         self.tria1, self.tria1_id=self.draw_triangle(self.tria1[0,0],self.tria1[0,1],self.tria1[1,0],self.tria1[1,1],self.tria1[2,0],self.tria1[2,1])
         '''
-        self.tinh_tien_sailboat(1, 0)
-        print(self.tria_body_left)
-        print (self.tria_body_left_id)
-        self.after(120, self.move_2d)
-        
-        
+        if self.moving_check:
+            
+            self.tinh_tien_sailboat(1, 0)
+            #print(self.tria_body_left)
+            #print (self.tria_body_left_id)
+            self.after(120, self.move_2d)
+        else:
+            self.after_cancel(self.after(120, self.move_2d))
+            
     def tinh_tien_sailboat(self, x, y):
         
         self.tria_body_left = self.tinh_tien(self.tria_body_left, x, y)
         self.canvas.delete(*self.tria_body_left_id) #Xóa đi hình trước vẽ
         self.tria_body_left , self.tria_body_left_id=self.draw_right_triangle(self.tria_body_left[0,0],self.tria_body_left[0,1],-10,-10)
-
+        
         self.tria_body_right = self.tinh_tien(self.tria_body_right, x, y)
         self.canvas.delete(*self.tria_body_right_id) #Xóa đi hình trước vẽ
         self.tria_body_right , self.tria_body_right_id=self.draw_right_triangle(self.tria_body_right[0,0],self.tria_body_right[0,1],10,-10)
@@ -77,10 +87,9 @@ class Graphics2D(Frame):
         self.rec_sail = self.tinh_tien(self.rec_sail, x, y)
         self.canvas.delete(*self.rec_sail_id) #Xóa đi hình trước vẽ
         self.rec_sail , self.rec_sail_id=self.draw_rectangle(self.rec_sail[0,0],self.rec_sail[0,1],self.rec_sail[1,0], self.rec_sail[1,1])
-        print(x, y)
+        #print(x, y)
 
     def draw_sailboat(self, x0, y0):
-
         self.tria_body_left, self.tria_body_left_id = self.draw_right_triangle(x0, y0, -10, -10)
                
         self.tria_body_right, self.tria_body_right_id = self.draw_right_triangle(x0+30, y0, 10, -10)
@@ -89,9 +98,21 @@ class Graphics2D(Frame):
 
         self.rec_sail, self.rec_sail_id = self.draw_rectangle (x0+14 ,y0+5,x0+16, y0)
 
-        self.tria_sail_left, self.tria_sail_left_id = self.draw_right_triangle(x0+14, y0+5, x0+20, y0+50)
-        self.tria_sail_right, self.tria_sail_right_id= self.draw_right_triangle(x0+16, y0+5, x0+40, y0+60)
+        self.tria_sail_left, self.tria_sail_left_id = self.draw_right_triangle(x0+14, y0+5, -10, 20)
+        self.tria_sail_right, self.tria_sail_right_id= self.draw_right_triangle(x0+16, y0+5, 10, 30)
         pass
+    def delete_sailboat(self, x0, y0):
+        self.canvas.delete(*self.tria_body_left_id)
+        self.canvas.delete(*self.tria_body_right_id)
+        self.canvas.delete(*self.tria_sail_left_id)
+        self.canvas.delete(*self.tria_sail_right_id) #Xóa đi hình trước vẽ
+        self.canvas.delete(*self.tria_sail_right_id) #Xóa đi hình trước vẽ
+        self.canvas.delete(*self.rec_body_id) #Xóa đi hình trước vẽ
+        self.canvas.delete(*self.rec_sail_id) #Xóa đi hình trước vẽ
+    def sailboat(self, x0, y0):
+        self.delete_sailboat( x0, y0)
+        self.draw_sailboat(x0, y0)
+        
 ##############bỏ
     def draw_sailboat_fill(self):
         #Điểm A(-30, -30)
@@ -126,15 +147,16 @@ class Graphics2D(Frame):
         pass
         
     def draw_2d_main(self):
-        '''
+        self.clear_canvas()
         self.rec1, self.rec1_id = self.draw_rectangle(1, 1, 10, 20)
         self.tria1, self.tria1_id = self.draw_isosceles_triangle(50, 50, 30, 60)
-        
+        '''
         print(self.tria1)
         print(self.tria1_id)
         '''
-        self.draw_sailboat(-30, -30)
-
+        
+        self.draw_sailboat(-110, -40)
+        #self.sailboat(-110,-30)
         #self.pixel_id = self.put_pixel_stroke(x=70, y=70, width_stroke=3, f_color="red", o_color = "red")
         
 ##############################################################################
