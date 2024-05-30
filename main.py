@@ -61,6 +61,7 @@ class Application(Tk):
         
 
     def clear_application(self):
+        
         for widget in self.winfo_children():
             if isinstance(widget, (Graphics3D, Graphics2D, Home)):
                 widget.pack_forget()
