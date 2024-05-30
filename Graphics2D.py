@@ -244,7 +244,6 @@ class Graphics2D(Frame):
                     p += f1
                     x += x_step
                 arr.append(self.put_pixel(x,y))
-
         return arr
       
     def draw_line_background(self, x1, y1, x2, y2, direction, draw_to):
@@ -269,27 +268,27 @@ class Graphics2D(Frame):
                     p += f2
                 else:
                     p += f1
-                    y += y_step
+                    y += y_step                    
+                    if direction=='right':
+                        x_background=x+1
+                        while(x_background<=draw_to-1):
+                            arr_fill.append(self.put_pixel(x_background,y,'red','red'))
+                            x_background+=1
+                    elif direction=='left':
+                        x_background=x+1
+                        while(x_background<=draw_to+1):
+                            arr_fill.append(self.put_pixel(x_background,y,'red','red'))
+                            x_background-=1
                 if direction=='up':
-                    y_background=y+1
-                    while(y_background<=draw_to-1):
-                        arr_fill.append(self.put_pixel(x,y_background,'red','red'))
-                        y_background+=1
+                        y_background=y+1
+                        while(y_background<=draw_to-1):
+                            arr_fill.append(self.put_pixel(x,y_background,'red','red'))
+                            y_background+=1
                 elif direction=='down':
                     y_background=y-1
                     while(y_background>=draw_to+1):
                         arr_fill.append(self.put_pixel(x,y_background,'red','red'))
                         y_background-=1
-                elif direction=='right':
-                    x_background=X+1
-                    while(x_background<=draw_to-1):
-                        arr_fill.append(self.put_pixel(x_background,y,'red','red'))
-                        x_background+=1
-                elif direction=='left':
-                    x_background=X=1
-                    while(x_background<=draw_to+1):
-                        arr_fill.append(self.put_pixel(x_background,y,'red','red'))
-                        x_background-=1
                 arr.append(self.put_pixel(x,y))
         else:
             p=2*dx-dy
@@ -302,23 +301,23 @@ class Graphics2D(Frame):
                 else:
                     p += f1
                     x += x_step
-                if direction=='up':
-                    y_background=y+1
-                    while(y_background<=draw_to-1):
-                        arr_fill.append(self.put_pixel(x,y_background,'red','red'))
-                        y_background+=1
-                elif direction=='down':
-                    y_background=y-1
-                    while(y_background>=draw_to+1):
-                        arr_fill.append(self.put_pixel(x,y_background,'red','red'))
-                        y_background-=1
-                elif direction=='right':
-                    x_background=X+1
+                    if direction=='up':
+                        y_background=y+1
+                        while(y_background<=draw_to-1):
+                            arr_fill.append(self.put_pixel(x,y_background,'red','red'))
+                            y_background+=1
+                    elif direction=='down':
+                        y_background=y-1
+                        while(y_background>=draw_to+1):
+                            arr_fill.append(self.put_pixel(x,y_background,'red','red'))
+                            y_background-=1
+                if direction=='right':
+                    x_background=x+1
                     while(x_background<=draw_to-1):
                         arr_fill.append(self.put_pixel(x_background,y,'red','red'))
                         x_background+=1
                 elif direction=='left':
-                    x_background=X=1
+                    x_background=x+1
                     while(x_background<=draw_to+1):
                         arr_fill.append(self.put_pixel(x_background,y,'red','red'))
                         x_background-=1
@@ -409,8 +408,9 @@ class Graphics2D(Frame):
             arr.extend(self.draw_line(x2, y1, x2, y2))
             arr.extend(self.draw_line(x1, y2, x1, y1))
         else:
-            arr.extend(self.draw_line(x2, y1, x1, y1))
-            arr.extend(self.draw_line(x2, y2, x1, y2))
+            arr.append(self.put_pixel(x1,y1))
+            arr.append(self.put_pixel(x1,y2))
+
         return np.array(([x1,y1,1], [x2,y2,1])), arr, arr_fill
     
     def draw_rectangle(self, x1, y1, x2, y2):
@@ -449,6 +449,9 @@ class Graphics2D(Frame):
         arr.extend(self.draw_line( x1, y1, x2, y2))  # Cạnh đáy
         if bool_canh_ke==1:
             arr.extend(self.draw_line(x3, y3, x1, y1))  # Cạnh kề
+        else:
+            arr.append(self.put_pixel(x1,y1))
+            arr.append(self.put_pixel(x3,y3))
         return np.array(([x1,y1,1],[x2,y2,1],[x3,y3,1])), arr, arr_fill
         
     def draw_ellipse(self, xc, yc, a, b):
