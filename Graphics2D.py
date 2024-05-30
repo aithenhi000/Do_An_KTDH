@@ -29,13 +29,10 @@ class Graphics2D(Frame):
         )
         self.btn_draw_2d.pack()
         self.btn_move_2d = Button(
-            self, text="CHUYỂN ĐỘNG",bg='#FFC470', font=self.font_heading, command=self.moving_button
+            self, text="BẬT/TẮT CHUYỂN ĐỘNG",bg='#FFC470', font=self.font_heading, command=self.moving_button
         )
         self.btn_move_2d.pack()
-        self.btn_stop = Button(
-            self, text="DỪNG LẠI", bg='#FFC470', font=self.font_heading
-        )
-        self.btn_stop.pack()
+
         self.btn_grid = Button(
             self, text="BẬT/TẮT GRID PIXEL", bg='#FFC470', font=self.font_heading, command=self.create_axis
         )
