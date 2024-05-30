@@ -436,28 +436,7 @@ class Graphics2D(Frame):
         arr.extend(self.draw_line(x2, y1, x2, y2, color))
         arr.extend(self.draw_line(x2, y2, x1, y2, color))
         arr.extend(self.draw_line(x1, y2, x1, y1, color))
-<<<<<<< Updated upstream
-=======
-    def draw_filled_rectangle(self, x1, y1, x2, y2, bool_left_right=1):
-        arr, arr_fill=self.draw_line_background(x1, y1, x2, y1, 'down', y2)
-        arr.extend(self.draw_line(x2, y2, x1, y2))        
-        if bool_left_right==1:
-            arr.extend(self.draw_line(x2, y1, x2, y2))
-            arr.extend(self.draw_line(x1, y2, x1, y1))
-        else:
-            arr.append(self.put_pixel(x1,y1))
-            arr.append(self.put_pixel(x1,y2))
 
-        return np.array(([x1,y1,1], [x2,y2,1])), arr, arr_fill
-    
-    def draw_rectangle(self, x1, y1, x2, y2):
-        arr=self.draw_line(x1, y1, x2, y1)    
-        arr.extend(self.draw_line(x2, y1, x2, y2))
-        arr.extend(self.draw_line(x2, y2, x1, y2))
-        arr.extend(self.draw_line(x1, y2, x1, y1))
->>>>>>> 5ed6fa171e937f1623b8fce7e274a26872b07afa
-=======
->>>>>>> Stashed changes
         return np.array(([x1,y1,1], [x2,y2,1])), arr
 
     def draw_triangle(self, x1, y1, x2, y2, x3, y3, color="green"):
@@ -491,19 +470,7 @@ class Graphics2D(Frame):
         arr.extend(self.draw_line(x2, y2, x3, y3, color))  # Cạnh kề
         arr.extend(self.draw_line(x3, y3, x1, y1, color))  # Cạnh huyền
         return np.array(([x1,y1,1],[x2,y2,1],[x3,y3,1])), arr#, pixel_ids
-<<<<<<< Updated upstream
-=======
-        arr, arr_fill=self.draw_line_background(x2, y2, x3, y3, fill_direction, y1)  # Cạnh huyền
-        arr.extend(self.draw_line( x1, y1, x2, y2))  # Cạnh đáy
-        if bool_canh_ke==1:
-            arr.extend(self.draw_line(x3, y3, x1, y1))  # Cạnh kề
-        else:
-            arr.append(self.put_pixel(x1,y1))
-            arr.append(self.put_pixel(x3,y3))
-        return np.array(([x1,y1,1],[x2,y2,1],[x3,y3,1])), arr, arr_fill
->>>>>>> 5ed6fa171e937f1623b8fce7e274a26872b07afa
-=======
->>>>>>> Stashed changes
+
         
     def draw_ellipse(self, xc, yc, a, b, color="green"):
         x = 0
