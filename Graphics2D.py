@@ -175,6 +175,11 @@ class Graphics2D(Frame):
         '''
         
         self.draw_sailboat(-110, -40)
+        self.draw_mountain(-110, 55)
+        self.draw_sun(40, 60)
+        self.draw_bird1(-100, 65)
+        self.draw_bird2(-80, 55)
+        self.draw_bird3(-35, 70)
         #self.sailboat(-110,-30)
         #self.pixel_id = self.put_pixel_stroke(x=70, y=70, width_stroke=3, f_color="red", o_color = "red")
         
@@ -272,7 +277,7 @@ class Graphics2D(Frame):
                 arr.append(self.put_pixel(x,y))
         return arr
       
-    def draw_line_background(self, x1, y1, x2, y2, direction, draw_to):
+    def draw_line_background(self, x1, y1, x2, y2, direction, draw_to, color='red'):
         arr=[]
         arr_fill=[]
         x1=round(x1)
@@ -298,22 +303,22 @@ class Graphics2D(Frame):
                     if direction=='right':
                         x_background=x+1
                         while(x_background<=draw_to-1):
-                            arr_fill.append(self.put_pixel(x_background,y,'red','red'))
+                            arr_fill.append(self.put_pixel(x_background,y,color,color))
                             x_background+=1
                     elif direction=='left':
                         x_background=x+1
                         while(x_background<=draw_to+1):
-                            arr_fill.append(self.put_pixel(x_background,y,'red','red'))
+                            arr_fill.append(self.put_pixel(x_background,y,color,color))
                             x_background-=1
                 if direction=='up':
                         y_background=y+1
                         while(y_background<=draw_to-1):
-                            arr_fill.append(self.put_pixel(x,y_background,'red','red'))
+                            arr_fill.append(self.put_pixel(x,y_background,color,color))
                             y_background+=1
                 elif direction=='down':
                     y_background=y-1
                     while(y_background>=draw_to+1):
-                        arr_fill.append(self.put_pixel(x,y_background,'red','red'))
+                        arr_fill.append(self.put_pixel(x,y_background,color,color))
                         y_background-=1
                 arr.append(self.put_pixel(x,y))
         else:
@@ -330,22 +335,22 @@ class Graphics2D(Frame):
                     if direction=='up':
                         y_background=y+1
                         while(y_background<=draw_to-1):
-                            arr_fill.append(self.put_pixel(x,y_background,'red','red'))
+                            arr_fill.append(self.put_pixel(x,y_background,color,color))
                             y_background+=1
                     elif direction=='down':
                         y_background=y-1
                         while(y_background>=draw_to+1):
-                            arr_fill.append(self.put_pixel(x,y_background,'red','red'))
+                            arr_fill.append(self.put_pixel(x,y_background,color,color))
                             y_background-=1
                 if direction=='right':
                     x_background=x+1
                     while(x_background<=draw_to-1):
-                        arr_fill.append(self.put_pixel(x_background,y,'red','red'))
+                        arr_fill.append(self.put_pixel(x_background,y,color,color))
                         x_background+=1
                 elif direction=='left':
                     x_background=x+1
                     while(x_background<=draw_to+1):
-                        arr_fill.append(self.put_pixel(x_background,y,'red','red'))
+                        arr_fill.append(self.put_pixel(x_background,y,color,color))
                         x_background-=1
                 arr.append(self.put_pixel(x,y))
                     
@@ -573,3 +578,68 @@ class Graphics2D(Frame):
                 pos[x]=np.matmul(pos[x],mul_matrix)
 
         return pos
+
+    def draw_mountain(self, x0, y0):
+        self.draw_line_background(x0, y0, -100, 35, 'down', 23)
+        # self.draw_line(x0, y0, -100, 35)
+        self.draw_line_background(-100, 35, -60, 45, 'down', 23)
+        # self.draw_line(-100, 35, -60, 45)
+        self.draw_line_background(-120, 35, -110, 55, 'down', 23)
+        # self.draw_line(-120, 35, -110, 55)
+        self.draw_line_background(-60, 45, -10, 25, 'down', 23)
+        # self.draw_line(-60, 45, -10, 25)
+        self.draw_line_background(-10, 25, 30, 42, 'down', 23)
+        # self.draw_line(-10, 25, 30, 42)
+        self.draw_line_background(30, 42, 70, 25, 'down', 23)
+        # self.draw_line(30, 42, 70, 25)
+        self.draw_line_background(70, 25, 120, 68, 'down', 23)
+        # self.draw_line(70, 25, 120, 68)
+
+    def draw_sun(self, x0, y0):
+        self.draw_circle(x0, y0, 10)
+        self.draw_line(40, 71, 40, 73)
+        self.draw_line(51, 60, 53, 60)
+        self.draw_line(40, 48, 40, 46)
+        self.draw_line(29, 60, 27, 60)
+        self.draw_line(32, 67, 30, 69)
+        self.draw_line(48, 67, 50, 69)
+        self.draw_line(48, 50, 50, 48)
+        self.draw_line(32, 50, 30, 48)
+
+    def draw_bird1(self, x0, y0):
+        self.draw_ellipse(x0, y0, 1, 0)
+        self.draw_ellipse(-99, 65, 1, 0)
+        self.draw_ellipse(-98, 64, 1, 0)
+        self.draw_ellipse(-97, 65, 1, 0)
+        self.draw_ellipse(-96, 65, 1, 0)
+        self.draw_ellipse(-101, 64, 1, 0)
+        self.draw_ellipse(-95, 64, 1, 0)
+        self.draw_ellipse(-98, 63, 1, 0)
+        self.draw_ellipse(-102, 63, 1, 0)
+        self.draw_ellipse(-94, 63, 1, 0)
+
+    def draw_bird2(self, x0, y0):
+        self.draw_ellipse(x0, y0, 1, 0)
+        self.draw_ellipse(-99 + 20, 65 - 10, 1, 0)
+        self.draw_ellipse(-98 + 20, 64 - 10, 1, 0)
+        self.draw_ellipse(-97 + 20, 65 - 10, 1, 0)
+        self.draw_ellipse(-96 + 20, 65 - 10, 1, 0)
+        self.draw_ellipse(-101 + 20, 64 - 10, 1, 0)
+        self.draw_ellipse(-95 + 20, 64 - 10, 1, 0)
+        self.draw_ellipse(-98 + 20, 63 - 10, 1, 0)
+        self.draw_ellipse(-102 + 20, 63 - 10, 1, 0)
+        self.draw_ellipse(-94 + 20, 63 - 10, 1, 0)
+
+    def draw_bird3(self, x0, y0):
+        self.draw_ellipse(x0, y0, 1, 0)
+        self.draw_ellipse(-99 + 65, 65 + 5, 1, 0)
+        self.draw_ellipse(-98 + 65, 64 + 5, 1, 0)
+        self.draw_ellipse(-97 + 65, 65 + 5, 1, 0)
+        self.draw_ellipse(-96 + 65, 65 + 5, 1, 0)
+        self.draw_ellipse(-101 + 65, 64 + 5, 1, 0)
+        self.draw_ellipse(-95 + 65, 64 + 5, 1, 0)
+        self.draw_ellipse(-98 + 65, 63 + 5, 1, 0)
+        self.draw_ellipse(-102 + 65, 63 + 5, 1, 0)
+        self.draw_ellipse(-94 + 65, 63 + 5, 1, 0)
+
+
