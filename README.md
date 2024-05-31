@@ -1,6 +1,12 @@
 main.py : chương trình chính để chạy code
-GUI : giao diện của App
-    + grid pixel 
-    + panel
+home : Thông tin các thành viên
 
-Graphics2D : các hàm vẽ đồ họa 2d
+Graphics2D : Đồ họa 2d
+    *Vật thể chính:
+        +Mặt trời
+        +Mây
+        +Thuyền
+
+Graphics3D : Đồ họa 3d 
+    + Vẽ HHCN
+    + Vẽ Hình trụ

@@ -14,32 +14,8 @@ class Home(Frame):
         self.create_canvas()
         self.create_grid_pixel()
         self.write_name()
-        #self.create_circle()
-        #self.move_circle()
-        
-    def tinh_tien(self, pos, delta_x, delta_y):
 
-        mul_matrix = np.array(([1, 0, 0], [0, 1, 0], [delta_x, delta_y, 1]))
 
-        #for x in range(0, pos.shape[0]):
-        pos = np.matmul(pos, mul_matrix)
-
-        return pos    
-
-        
-        
-    def move_circle(self):
-        self.pos1=self.tinh_tien(self.pos1, 0, -5)    
-        print(self.pos1) 
-        self.canvas.delete(*self.p1)
-        self.pos1, self.p1 = self.draw_circle(self.pos1[0],self.pos1[1], 50)
-        
-        self.after(100, self.move_circle)
-        
-    def create_circle(self):
-        self.pos1, self.p1 = self.draw_circle(0, 80, 50)
-
-    
     def write_name(self):
         center_x = self.width // 2
         center_y = self.height // 2
@@ -58,36 +34,6 @@ class Home(Frame):
             pixel_id=self.canvas.create_rectangle(adjusted_x-2, adjusted_y-2, adjusted_x+2, adjusted_y+2, fill=color, outline=None)
             return pixel_id
     
-    def draw_circle(self, x_center, y_center, radius):
-        x_center=round(x_center)
-        y_center=round(y_center)
-        x = radius
-        y = 0
-        p = 1 - radius
-
-        points = []
-
-        while x >= y:
-            points.extend([
-                self.put_pixel(x_center + x, y_center + y),
-                self.put_pixel(x_center - x, y_center + y),
-                self.put_pixel(x_center + x, y_center - y),
-                self.put_pixel(x_center - x, y_center - y),
-                self.put_pixel(x_center + y, y_center + x),
-                self.put_pixel(x_center - y, y_center + x),
-                self.put_pixel(x_center + y, y_center - x),
-                self.put_pixel(x_center - y, y_center - x)
-            ])
-
-            y += 1
-
-            if p <= 0:
-                p = p + 2*y + 1
-            else:
-                x -= 1
-                p = p + 2*y - 2*x + 1
-            
-        return np.array(([x_center, y_center, 1])), points
     
     def create_grid_pixel(self):
         canvas=self.canvas   

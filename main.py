@@ -9,7 +9,7 @@ class Application(Tk):
         self.width=1500
         self.height=750
         self.title("ĐỒ ÁN KỸ THUẬT ĐỒ HỌA")
-        #self.iconbitmap('icon_app.ico')
+        self.iconbitmap('icon_app.ico')
         self.geometry(f"{self.width}x{self.height}")
         self.create_taskbar()
         self.state("zoomed")
@@ -48,8 +48,7 @@ class Application(Tk):
         self.app_2d = Graphics2D(master=self)
         self.lb_title.config(text='GIAO DIỆN ĐỒ HỌA 2D')
         self.app_2d.pack()
-        # self.sb1=sailboat(master=self)
-        # self.sb1.pack()
+
         
 
     def show_3d_application(self):

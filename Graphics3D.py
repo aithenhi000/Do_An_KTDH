@@ -1,6 +1,5 @@
 from tkinter import *
-from Graphics2D import Graphics2D
-from math import cos, sin, radians, sqrt, pow, tan
+from math import sqrt
 
 class Graphics3D(Frame):
     def __init__(self, master, width, height):
@@ -95,11 +94,11 @@ class Graphics3D(Frame):
         ox_cylinder.grid(column=1, row=2)
         oy_cylinder.grid(column=1, row=3)
         oz_cylinder.grid(column=1, row=4)
-        r_cylinder.insert(0, "60")
-        h_cylinder.insert(0, "60")
-        ox_cylinder.insert(0, "60")
+        r_cylinder.insert(0, "30")
+        h_cylinder.insert(0, "40")
+        ox_cylinder.insert(0, "70")
         oy_cylinder.insert(0, "0")
-        oz_cylinder.insert(0, "60")
+        oz_cylinder.insert(0, "70")
         self.btn_cylinder = Button(
             self.lbf_cylinder,
             text="Vẽ hình trụ",
@@ -144,10 +143,10 @@ class Graphics3D(Frame):
             canvas.create_line(0, y, self.width, y, fill="#EADBC8")
 
         # X AXIS
-        self.create_axis_3D(60, 'x', 'red')
+        self.create_axis_3D(100, 'x', 'red')
 
         # Y AXIS
-        self.create_axis_3D(100, 'y', 'green')
+        self.create_axis_3D(70, 'y', 'green')
 
         # Z AXIS
         self.create_axis_3D(100, 'z', 'blue')
@@ -218,11 +217,6 @@ class Graphics3D(Frame):
         x_prime = x - z/(2*sqrt(2))
         y_prime = y - z/(2*sqrt(2))
         return round(x_prime), round(y_prime)
-
-    # def cabinet_projection(self, x, y, z):
-    #     x_prime = x - y*(sqrt(2)/4)
-    #     y_prime = z - y*(sqrt(2)/4)
-    #     return round(x_prime), round(y_prime)
 
     def draw_cylinder(self, x, y, z, r, h):
         # hinh tron ben duoi (elip)

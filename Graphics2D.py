@@ -25,28 +25,37 @@ class Graphics2D(Frame):
     
     def create_menu(self):
         self.btn_draw_2d = Button(
-            self, text="VẼ CẢNH BIỂN 2D", bg='#FFC470', font=self.font_heading, command=self.draw_2d_main
+            self, text="VẼ CẢNH BIỂN 2D", bg='#FFC470', width=300, font=self.font_heading, command=self.draw_2d_main
+            
         )
-        self.btn_draw_2d.pack()
+        self.btn_draw_2d.pack(padx=5, pady=5)
         self.btn_move_2d = Button(
-            self, text="BẬT/TẮT CHUYỂN ĐỘNG",bg='#FFC470', font=self.font_heading, command=self.moving_button
+            self, text="BẬT/TẮT CHUYỂN ĐỘNG",bg='#FFC470', width=300, font=self.font_heading, command=self.moving_button
         )
-        self.btn_move_2d.pack()
+        self.btn_move_2d.pack(padx=5, pady=5)
 
         self.btn_grid = Button(
-            self, text="BẬT/TẮT GRID PIXEL", bg='#FFC470', font=self.font_heading, command=self.create_axis
+            self, text="BẬT/TẮT GRID PIXEL", width=300, bg='#FFC470', font=self.font_heading, command=self.create_axis
         )
-        self.btn_grid.pack()
+        self.btn_grid.pack(padx=5, pady=5)
 
     def create_info_panel(self):
-        self.fr=LabelFrame(self, text='THÔNG TIN VẬT THỂ DI CHUYỂN',borderwidth=2, relief="ridge", width=200, height=100)
-        self.fr.pack()
+        self.fr=LabelFrame(self, text='THÔNG TIN VẬT THỂ DI CHUYỂN',borderwidth=2, relief="groove", width=400, height=400, font=("Courier", 12, "bold"))
+        self.fr.pack(padx=5, pady=5, expand=True,fill="both")
             
-        self.label_1 = Label(self.fr, text="Thuyền buồm (Mũi thuyền): (0, 0)")
-        self.label_2 = Label(self.fr, text="Thuyền buồm (Điểm cuối): (0, 0)")
+        self.label_1 = Label(self.fr, text="Thuyền buồm (Mũi thuyền): (0, 0)", anchor='w')
+        self.label_2 = Label(self.fr, text="Thuyền buồm (Điểm cuối): (0, 0)", anchor='w')
+        self.label_3 = Label(self.fr, text="Thuyền buồm (Đỉnh buồm): (0, 0)", anchor='w')
+        self.label_4 = Label(self.fr, text="Thuyền buồm (Đáy thuyền): (0, 0)", anchor='w')
+        self.label_5 = Label(self.fr, text="Đám mây (Đầu): (0, 0)", anchor='w')
+        self.label_6 = Label(self.fr, text="Đám mây (Cuối): (0, 0)", anchor='w')
         
-        self.label_1.pack()
-        self.label_2.pack()
+        self.label_1.pack(fill='x')
+        self.label_2.pack(fill='x')
+        self.label_3.pack(fill='x')
+        self.label_4.pack(fill='x')
+        self.label_5.pack(fill='x')
+        self.label_6.pack(fill='x')
         
     def moving_button(self):
 
@@ -69,8 +78,12 @@ class Graphics2D(Frame):
 
             else:
                 self.tinh_tien_sailboat(1, -1)
-            self.label_1.config(text=f"Thuyền buồm (Mũi thuyền): {self.tria_sail_right[0,0],self.tria_sail_right[0,1]}")
-            self.label_2.config(text=f"Thuyền buồm (Điểm cuối): {self.tria_sail_left[0,0],self.tria_sail_left[0,1]}")
+            self.label_1.config(text=f"Thuyền buồm (Mũi thuyền): {self.tria_body_right[1,0],self.tria_body_right[1,1]}")
+            self.label_2.config(text=f"Thuyền buồm (Điểm cuối): {self.tria_body_left[1,0],self.tria_body_left[1,1]}")
+            self.label_3.config(text=f"Thuyền buồm (Đỉnh buồm): {self.tria_sail_right[1,0],self.tria_sail_right[1,1]}")
+            self.label_4.config(text=f"Thuyền buồm (Đáy thuyền): {round(self.rec_body[1,0]/2),self.rec_body[1,1]}")
+            self.label_5.config(text=f"Đám mây (Đầu): {self.cloud_1[0], self.cloud_1[1]}")
+            self.label_6.config(text=f"Đám mây (Cuối): {self.cloud_4[0], self.cloud_4[1]}")
             self.after(120, self.move_2d)
             
         else:
@@ -123,7 +136,7 @@ class Graphics2D(Frame):
         self.tria_sail_right, self.tria_sail_right_id, self.tria_sail_right_fill_id = self.draw_right_triangle(x0+16, y0+5, 10, 30, fill_direction='down')
         return x0, y0
         
-    #list vật thể
+    # HAM VE CAC VAT THE CHINH
     def draw_2d_main(self):
         self.clear_canvas()
         self.draw_sun(0, 0)
@@ -133,7 +146,7 @@ class Graphics2D(Frame):
         self.draw_bird3(-35, 70, fill='black')
         self.draw_sea(-120, 0, 120, -70)
         self.draw_cloud(-60, 25)
-        self.draw_sailboat(-110, -30)
+        self.draw_sailboat(-110, -20)
         
     def create_canvas(self):
         self.canvas = Canvas(self, width=self.width, height=self.height, bg="#FEFAF6")
@@ -532,7 +545,7 @@ class Graphics2D(Frame):
             arr.append(self.put_pixel(xc-x, yc+y, color=color, outline=outline))
             arr.append(self.put_pixel(xc+x, yc-y, color=color, outline=outline))
             arr.append(self.put_pixel(xc-x, yc-y, color=color, outline=outline))
-            arr_fill.append(self.put_pixel(xc,yc,color='white', outline='white'))
+            arr_fill.append(self.put_pixel(xc,yc,color=color, outline=color))
             
             if d2 > 0:
                 y -= 1
