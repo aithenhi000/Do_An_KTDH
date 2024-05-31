@@ -104,12 +104,12 @@ class Graphics2D(Frame):
         self.tria_sail_left = self.tinh_tien(self.tria_sail_left, x, y)
         self.canvas.delete(*self.tria_sail_left_id) #Xóa đi hình trước vẽ
         self.canvas.delete(*self.tria_sail_left_fill_id)
-        self.tria_sail_left , self.tria_sail_left_id, self.tria_sail_left_fill_id=self.draw_right_triangle(self.tria_sail_left[0,0],self.tria_sail_left[0,1],-10,20, 'down')
+        self.tria_sail_left , self.tria_sail_left_id, self.tria_sail_left_fill_id=self.draw_right_triangle(self.tria_sail_left[0,0],self.tria_sail_left[0,1],-10,20, 'down', fill='yellow')
         
         self.tria_sail_right = self.tinh_tien(self.tria_sail_right, x, y)
         self.canvas.delete(*self.tria_sail_right_id) #Xóa đi hình trước vẽ
         self.canvas.delete(*self.tria_sail_right_fill_id)
-        self.tria_sail_right , self.tria_sail_right_id, self.tria_sail_right_fill_id=self.draw_right_triangle(self.tria_sail_right[0,0],self.tria_sail_right[0,1],10,30, 'down')
+        self.tria_sail_right , self.tria_sail_right_id, self.tria_sail_right_fill_id=self.draw_right_triangle(self.tria_sail_right[0,0],self.tria_sail_right[0,1],10,30, 'down', fill='yellow')
 
         self.rec_body = self.tinh_tien(self.rec_body, x, y)
         self.canvas.delete(*self.rec_body_id) #Xóa đi hình trước vẽ
@@ -121,10 +121,6 @@ class Graphics2D(Frame):
         self.rec_sail , self.rec_sail_id=self.draw_rectangle(self.rec_sail[0,0],self.rec_sail[0,1],self.rec_sail[1,0], self.rec_sail[1,1])
         return x,y
 
-    def rotate_sun_halo(self, andgle=10):
-        pass    
-        
-
     def draw_sailboat(self, x0, y0):
         self.tria_body_left, self.tria_body_left_id, self.tria_body_left_fill_id = self.draw_right_triangle(x0, y0, -10, -10, bool_canh_ke=0)
         self.tria_body_right, self.tria_body_right_id, self.tria_body_right_fill_id = self.draw_right_triangle(x0+30, y0, 10, -10, bool_canh_ke=0)
@@ -132,8 +128,8 @@ class Graphics2D(Frame):
         self.rec_body, self.rec_body_id, self.rec_body_fill_id = self.draw_filled_rectangle (x0+30, y0, x0, y0-10, bool_left_right=0)
         
         self.rec_sail, self.rec_sail_id = self.draw_rectangle (x0+14 ,y0+5,x0+16, y0)
-        self.tria_sail_left, self.tria_sail_left_id, self.tria_sail_left_fill_id = self.draw_right_triangle(x0+14, y0+5, -10, 20, fill_direction='down')
-        self.tria_sail_right, self.tria_sail_right_id, self.tria_sail_right_fill_id = self.draw_right_triangle(x0+16, y0+5, 10, 30, fill_direction='down')
+        self.tria_sail_left, self.tria_sail_left_id, self.tria_sail_left_fill_id = self.draw_right_triangle(x0+14, y0+5, -10, 20, fill_direction='down', fill='yellow')
+        self.tria_sail_right, self.tria_sail_right_id, self.tria_sail_right_fill_id = self.draw_right_triangle(x0+16, y0+5, 10, 30, fill_direction='down', fill='yellow')
         return x0, y0
         
     # HAM VE CAC VAT THE CHINH
@@ -198,13 +194,13 @@ class Graphics2D(Frame):
                     font=("Arial", 7),
                 ))
         
-    def put_pixel(self, x, y, color="green", outline="black"):
+    def put_pixel(self, x, y, color="black", outline="black"):
         adjusted_x = self.width/2 + x*5
         adjusted_y = self.height/2 - y*5
         pixel_id=self.canvas.create_rectangle(adjusted_x-2, adjusted_y-2, adjusted_x+2, adjusted_y+2, fill=color, outline=outline)
         return pixel_id
     
-    def draw_line(self, x1, y1, x2, y2, color="green", outline='black'):
+    def draw_line(self, x1, y1, x2, y2, color="black", outline='black'):
         arr=[]
         x1=round(x1)
         y1=round(y1)
@@ -241,7 +237,7 @@ class Graphics2D(Frame):
                 arr.append(self.put_pixel(x,y, color=color, outline=outline))
         return arr
       
-    def draw_line_background(self, x1, y1, x2, y2, direction, draw_to, color='green', outline='black', fill='red'):
+    def draw_line_background(self, x1, y1, x2, y2, direction, draw_to, color='black', outline='black', fill='red'):
         arr=[]
         arr_fill=[]
         x1=round(x1)
@@ -398,15 +394,15 @@ class Graphics2D(Frame):
 
         while x >= y:
             if draw:
-                arr.append(self.put_pixel(x_center + y, y_center + x))
-                arr.append(self.put_pixel(x_center + x, y_center + y))
-                arr.append(self.put_pixel(x_center + x, y_center - y))
-                arr.append(self.put_pixel(x_center + y, y_center - x))
+                arr.append(self.put_pixel(x_center + y, y_center + x, color='yellow', outline='yellow'))
+                arr.append(self.put_pixel(x_center + x, y_center + y, color='yellow', outline='yellow'))
+                arr.append(self.put_pixel(x_center + x, y_center - y, color='yellow', outline='yellow'))
+                arr.append(self.put_pixel(x_center + y, y_center - x, color='yellow', outline='yellow'))
                 
-                arr.append(self.put_pixel(x_center - y, y_center - x))
-                arr.append(self.put_pixel(x_center - x, y_center + y))
-                arr.append(self.put_pixel(x_center - y, y_center + x))
-                arr.append(self.put_pixel(x_center - x, y_center - y))
+                arr.append(self.put_pixel(x_center - y, y_center - x, color='yellow', outline='yellow'))
+                arr.append(self.put_pixel(x_center - x, y_center + y, color='yellow', outline='yellow'))
+                arr.append(self.put_pixel(x_center - y, y_center + x, color='yellow', outline='yellow'))
+                arr.append(self.put_pixel(x_center - x, y_center - y, color='yellow', outline='yellow'))
             
             count += 1
             if count == dash_length:
@@ -443,7 +439,7 @@ class Graphics2D(Frame):
             
         return np.array(([x_center, y_center, radius])), arr
 
-    def draw_rectangle(self, x1, y1, x2, y2, color="green"):
+    def draw_rectangle(self, x1, y1, x2, y2, color="black"):
 
         arr=self.draw_line(x1, y1, x2, y1)
         arr.extend(self.draw_line(x2, y1, x2, y2, color))
@@ -452,7 +448,7 @@ class Graphics2D(Frame):
 
         return np.array(([x1,y1,1], [x2,y2,1])), arr
     
-    def draw_filled_rectangle(self, x1, y1, x2, y2, bool_left_right=1, color='green', outline='black', fill='red'):
+    def draw_filled_rectangle(self, x1, y1, x2, y2, bool_left_right=1, color='black', outline='black', fill='red'):
         
         if y1<y2:
             arr, arr_fill=self.draw_line_background(x1, y1, x2, y1, 'up', y2, color=color, fill=fill, outline=outline)
@@ -488,13 +484,13 @@ class Graphics2D(Frame):
         arr.extend(self.draw_line(x1, y1, x3, y3, color))  # Cạnh bên
         return np.array(([x1,y1,1],[x2,y2,1],[x3,y3,1])), arr
 
-    def draw_right_triangle(self, x1, y1, base, height, fill_direction='up', bool_canh_ke=1):
+    def draw_right_triangle(self, x1, y1, base, height, fill_direction='up', bool_canh_ke=1, fill='red'):
         x2 = x1 + base
         y2 = y1
         x3 = x1
         y3 = y1 + height
 
-        arr, arr_fill=self.draw_line_background(x2, y2, x3, y3, fill_direction, y1)  # Cạnh huyền
+        arr, arr_fill=self.draw_line_background(x2, y2, x3, y3, fill_direction, y1, fill=fill)  # Cạnh huyền
         arr.extend(self.draw_line( x1, y1, x2, y2))  # Cạnh đáy
         if bool_canh_ke==1:
             arr.extend(self.draw_line(x3, y3, x1, y1))  # Cạnh kề
@@ -596,19 +592,19 @@ class Graphics2D(Frame):
     def draw_mountain(self, x0, y0):
         truc_x = 0
         fill='green'
-        self.draw_line_background(x0, y0, -100, 35, 'down', truc_x, color='green', fill=fill)
+        self.draw_line_background(x0, y0, -100, 35, 'down', truc_x, color='black', fill=fill)
         # self.draw_line(x0, y0, -100, 35)
-        self.draw_line_background(-100, 35, -60, 45, 'down', truc_x, color='green', fill=fill)
+        self.draw_line_background(-100, 35, -60, 45, 'down', truc_x, color='black', fill=fill)
         # self.draw_line(-100, 35, -60, 45)
-        self.draw_line_background(-120, 35, -110, 55, 'down', truc_x, color='green', fill=fill)
+        self.draw_line_background(-120, 35, -110, 55, 'down', truc_x, color='black', fill=fill)
         # self.draw_line(-120, 35, -110, 55)
-        self.draw_line_background(-60, 45, -10, 25, 'down', truc_x, color='green', fill=fill)
+        self.draw_line_background(-60, 45, -10, 25, 'down', truc_x, color='black', fill=fill)
         # self.draw_line(-60, 45, -10, 25)
-        self.draw_line_background(-10, 25, 30, 42, 'down', truc_x, color='green', fill=fill)
+        self.draw_line_background(-10, 25, 30, 42, 'down', truc_x, color='black', fill=fill)
         # self.draw_line(-10, 25, 30, 42)
-        self.draw_line_background(30, 42, 70, 25, 'down', truc_x, color='green', fill=fill)
+        self.draw_line_background(30, 42, 70, 25, 'down', truc_x, color='black', fill=fill)
         # self.draw_line(30, 42, 70, 25)
-        self.draw_line_background(70, 25, 120, 68, 'down', truc_x, color='green', fill=fill)
+        self.draw_line_background(70, 25, 120, 68, 'down', truc_x, color='black', fill=fill)
         # self.draw_line(70, 25, 120, 68)
 
     def draw_sun(self, x0, y0):

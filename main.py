@@ -33,8 +33,7 @@ class Application(Tk):
         self.button_3d.pack(side="left", padx=5)
 
         self.lb_title=Label(self.taskbar_frame, text="", bg="lightgray", font=("Courier", 16, "bold"))
-        self.lb_title.pack(side="left", padx=300)
-        
+        self.lb_title.pack(side="left", padx=300) 
                  
     def show_home_page(self):
         self.clear_application()
