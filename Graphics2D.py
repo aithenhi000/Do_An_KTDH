@@ -46,20 +46,16 @@ class Graphics2D(Frame):
         self.label_2 = Label(self.fr, text="Cánh buồm phải (Sailboat): (0, 0)")
         self.label_3 = Label(self.fr, text="Thân tàu (Sailboat): (0, 0)")
         
-        
         self.label_1.pack()
         self.label_2.pack()
         self.label_3.pack()
         
-
-    
     def moving_button(self):
         self.DoiXung_cloud([1,-1], color="#CAF4FF")
         self.moving_check = not self.moving_check  # Đảo ngược trạng thái của moving_check
         if self.moving_check:
             self.move_2d()  # Nếu moving_check là True, bắt đầu di chuyển
-
-            
+     
     def move_2d(self):   
         self.count+=1
         if self.moving_check:
@@ -81,8 +77,6 @@ class Graphics2D(Frame):
         else:
             self.after_cancel(self.after(120, self.move_2d))
             
-    
-
     def tinh_tien_sailboat(self, x, y):
         
         self.tria_body_left = self.tinh_tien(self.tria_body_left, x, y)
@@ -115,6 +109,10 @@ class Graphics2D(Frame):
         self.rec_sail , self.rec_sail_id=self.draw_rectangle(self.rec_sail[0,0],self.rec_sail[0,1],self.rec_sail[1,0], self.rec_sail[1,1])
         return x,y
 
+    def rotate_sun_halo(self, andgle=10):
+        pass    
+        
+
     def draw_sailboat(self, x0, y0):
         self.tria_body_left, self.tria_body_left_id, self.tria_body_left_fill_id = self.draw_right_triangle(x0, y0, -10, -10, bool_canh_ke=0)
         self.tria_body_right, self.tria_body_right_id, self.tria_body_right_fill_id = self.draw_right_triangle(x0+30, y0, 10, -10, bool_canh_ke=0)
@@ -130,18 +128,16 @@ class Graphics2D(Frame):
     def draw_2d_main(self):
         self.clear_canvas()
 
+        self.draw_sun(0, 40)
         self.draw_mountain(-110, 55)
-        
         self.draw_bird1(-100, 65, fill='black')
         self.draw_bird2(-80, 55, fill='black')
         self.draw_bird3(-35, 70, fill='black')
-        self.canvas.create_rectangle(-120, 0, 120, -70, fill='blue', outline='blue')
         self.draw_sea(-120, 0, 120, -70)
         self.draw_cloud(-20, 45)
         self.draw_cloud(40, 80)
         self.draw_cloud(-60, 25)
         self.draw_sailboat(-110, -30)
-        self.draw_sun(0, 40)
         
     def create_canvas(self):
         self.canvas = Canvas(self, width=self.width, height=self.height, bg="#FEFAF6")
@@ -340,7 +336,7 @@ class Graphics2D(Frame):
                 
         return arr_fill
  
-    def draw_circle(self, x_center, y_center, radius):
+    def draw_circle(self, x_center, y_center, radius, bool_upper='yes', bool_bottom='yes'):
         x = radius
         y = 0
         p = 1 - radius
@@ -349,23 +345,25 @@ class Graphics2D(Frame):
         arr_fill = []
 
         while x >= y:
-            arr.append(self.put_pixel(x_center + y, y_center + x))
-            arr_fill.extend(self.draw_1_line_background(x_center + y, y_center + x, 'down', y_center))
-            arr.append(self.put_pixel(x_center + x, y_center + y))
-            arr_fill.extend(self.draw_1_line_background(x_center + x, y_center + y, 'left', x_center))
-            arr.append(self.put_pixel(x_center + x, y_center - y))
-            arr_fill.extend(self.draw_1_line_background(x_center + x, y_center - y, 'left', x_center))
-            arr.append(self.put_pixel(x_center + y, y_center - x))
-            arr_fill.extend(self.draw_1_line_background(x_center + y, y_center - x, 'up', y_center))
-               
-            arr.append(self.put_pixel(x_center - y, y_center - x))
-            arr_fill.extend(self.draw_1_line_background(x_center - y, y_center - x, 'up', y_center))
-            arr.append(self.put_pixel(x_center - x, y_center + y))
-            arr_fill.extend(self.draw_1_line_background(x_center - x, y_center - y, 'right', x_center))
-            arr.append(self.put_pixel(x_center - y, y_center + x))
-            arr_fill.extend(self.draw_1_line_background(x_center - x, y_center + y, 'right', x_center))
-            arr.append(self.put_pixel(x_center - x, y_center - y))
-            arr_fill.extend(self.draw_1_line_background(x_center - y, y_center + x, 'down', y_center))
+            if bool_upper=='yes':
+                arr.append(self.put_pixel(x_center + y, y_center + x))
+                arr_fill.extend(self.draw_1_line_background(x_center + y, y_center + x, 'down', y_center))
+                arr.append(self.put_pixel(x_center + x, y_center + y))
+                arr_fill.extend(self.draw_1_line_background(x_center + x, y_center + y, 'left', x_center))
+                arr.append(self.put_pixel(x_center - y, y_center + x))
+                arr_fill.extend(self.draw_1_line_background(x_center - x, y_center + y, 'right', x_center))
+                arr.append(self.put_pixel(x_center - x, y_center - y))
+                arr_fill.extend(self.draw_1_line_background(x_center - y, y_center + x, 'down', y_center))              
+                
+            if bool_bottom=='yes':
+                arr.append(self.put_pixel(x_center + x, y_center - y))
+                arr_fill.extend(self.draw_1_line_background(x_center + x, y_center - y, 'left', x_center))
+                arr.append(self.put_pixel(x_center + y, y_center - x))
+                arr_fill.extend(self.draw_1_line_background(x_center + y, y_center - x, 'up', y_center))
+                arr.append(self.put_pixel(x_center - y, y_center - x))
+                arr_fill.extend(self.draw_1_line_background(x_center - y, y_center - x, 'up', y_center))
+                arr.append(self.put_pixel(x_center - x, y_center + y))
+                arr_fill.extend(self.draw_1_line_background(x_center - x, y_center - y, 'right', x_center))  
 
             y += 1
             if p <= 0:
@@ -563,8 +561,6 @@ class Graphics2D(Frame):
 
         return pos
 
-    
-
     def clear_canvas(self):
         self.canvas.delete('all')
         self.create_grid_pixel()
@@ -602,12 +598,10 @@ class Graphics2D(Frame):
         # self.draw_line(30, 42, 70, 25)
         self.draw_line_background(70, 25, 120, 68, 'down', truc_x, color='green', fill=fill)
         # self.draw_line(70, 25, 120, 68)
-        self.draw_line(-120,0,120,0)
 
-        
     def draw_sun(self, x0, y0):
-        self.sun_1, self.sun_1_id, self.sun_1_id_fill = self.draw_circle(x0, y0, 50)
-        self.sun_2, self.sun_2_id, self.sun_2_id_fill = self.draw_dashed_circle(x0, y0, 80, 5)
+        self.sun_1, self.sun_1_id, self.sun_1_id_fill = self.draw_circle(x0, y0, 50, bool_upper='yes', bool_bottom='no')
+        self.sun_2, self.sun_2_id = self.draw_dashed_circle(x0, y0, 80, 5)
 
     def draw_bird1(self, x0, y0, color='black', outline='black', fill='black'):
         self.draw_ellipse(x0, y0, 1, 0, color=color, outline=outline, fill=fill)
@@ -620,7 +614,6 @@ class Graphics2D(Frame):
         self.draw_ellipse(-98, 63, 1, 0, color=color, outline=outline, fill=fill)
         self.draw_ellipse(-102, 63, 1, 0, color=color, outline=outline, fill=fill)
         self.draw_ellipse(-94, 63, 1, 0, color=color, outline=outline, fill=fill)
-
 
     def draw_bird2(self, x0, y0, color='black', outline='black', fill='black'):
         self.draw_ellipse(x0, y0, 1, 0, color=color, outline=outline, fill=fill)
@@ -650,6 +643,8 @@ class Graphics2D(Frame):
         x1,y1=self.adjust_to_screen(x1,y1)
         x2,y2=self.adjust_to_screen(x2,y2)
         self.canvas.create_rectangle(x1+2.5, y1, x2+0.5, y2, fill='blue', outline='blue')
+        self.draw_line(-120,0,120,0)
+ 
     def doi_xung(self, pos, choice):
         mul_matrix = np.array(( [-choice[1], 0,          0],
                                 [0,         -choice[0],  0],
@@ -662,6 +657,7 @@ class Graphics2D(Frame):
                 pos[x]=np.matmul(pos[x],mul_matrix)
         
         return pos
+ 
     def ti_le(self, pos, ratio):
     
         mul_matrix = np.array(( [ratio, 0,      0],
@@ -674,6 +670,7 @@ class Graphics2D(Frame):
                 pos[x]=np.matmul(pos[x],mul_matrix)
             
         return pos
+
     def DoiXung_cloud(self, choice, color="white"):
         self.cloud_1=self.ti_le(self.cloud_1, 0.8)
         self.cloud_2=self.ti_le(self.cloud_2, 0.8)
@@ -703,8 +700,6 @@ class Graphics2D(Frame):
         self.cloud_4, self.cloud_4_id, self.cloud_4_id_fill=self.draw_ellipse(self.cloud_4[0], self.cloud_4[1], 5, 5, color=color, outline=color, fill=color)
         self.cloud_5, self.cloud_5_id, self.cloud_5_id_fill=self.draw_filled_rectangle(self.cloud_5[0,0],self.cloud_5[0,1],self.cloud_5[1,0],self.cloud_5[1,1], color=color, outline=color, fill=color)
     
-        
-            
     def draw_cloud(self, x, y):  
         arr=[]
         self.cloud_1, self.cloud_1_id, self.cloud_1_id_fill=self.draw_ellipse(x, y-5, 5, 5, color='white', outline='white', fill='white')       
