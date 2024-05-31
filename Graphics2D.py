@@ -18,7 +18,7 @@ class Graphics2D(Frame):
         self.create_menu()
         self.create_info_panel()
         self.flag_axis=0
-        
+        self.count=1
 
         ###
         self.moving_check = False
@@ -41,6 +41,17 @@ class Graphics2D(Frame):
     def create_info_panel(self):
         self.fr=LabelFrame(self, text='THÔNG TIN VẬT THỂ DI CHUYỂN',borderwidth=2, relief="ridge", width=200, height=100)
         self.fr.pack()
+            
+        self.label_1 = Label(self.fr, text="Thuyền buồm: (0, 0)")
+        self.label_2 = Label(self.fr, text="Cánh buồm phải (Sailboat): (0, 0)")
+        self.label_3 = Label(self.fr, text="Thân tàu (Sailboat): (0, 0)")
+        
+        
+        self.label_1.pack()
+        self.label_2.pack()
+        self.label_3.pack()
+        
+
     
     def moving_button(self):
         self.moving_check = not self.moving_check  # Đảo ngược trạng thái của moving_check
@@ -51,15 +62,74 @@ class Graphics2D(Frame):
         #self.moving_check = True
         #if self.moving_check:   #đặt flag moving_check kiểm tra xem có đang di chuyển không
         
+        self.count+=1
         if self.moving_check:
-            
-            self.tinh_tien_sailboat(1, 0)
-            #print(self.tria_body_left)
-            #print (self.tria_body_left_id)
-            self.after(120, self.move_2d)
+            #print(self.count)
+            if (self.count%7)== 0 or (self.count%7)==1:
+                #self.tinh_tien_cloud(5, 0)
+                self.tinh_tien_sailboat(1, 0)
+
+                self.after(120, self.move_2d)
+            elif (self.count%7)==2 or (self.count%7)==3:
+                #self.tinh_tien_cloud(5, 0)
+                self.tinh_tien_sailboat(1, 1)
+                self.after(120, self.move_2d)
+            else:
+                self.tinh_tien_sailboat(1, -1)
+                self.after(120, self.move_2d)
         else:
             self.after_cancel(self.after(120, self.move_2d))
             
+    def xoay_sailboat(self, deg):
+        self.tria_body_left = self.xoay_goc_x_do(self.tria_body_left, deg)
+        self.canvas.delete(*self.tria_body_left_id) #Xóa đi hình trước vẽ
+        self.canvas.delete(*self.tria_body_left_fill_id)
+        self.tria_body_left, self.tria_body_left_id, self.tria_body_left_fill_id = self.draw_right_triangle(self.tria_body_left[0,0],self.tria_body_left[0,1],-10,-10, 'up', bool_canh_ke=0)
+        
+        self.tria_body_right = self.xoay_goc_x_do(self.tria_body_right, deg)
+        self.canvas.delete(*self.tria_body_right_id) #Xóa đi hình trước vẽ
+        self.canvas.delete(*self.tria_body_right_fill_id)
+        self.tria_body_right , self.tria_body_right_id, self.tria_body_right_fill_id=self.draw_right_triangle(self.tria_body_right[0,0],self.tria_body_right[0,1],10,-10, 'up', bool_canh_ke=0)
+        
+        self.tria_sail_left = self.xoay_goc_x_do(self.tria_sail_left, deg)
+        self.canvas.delete(*self.tria_sail_left_id) #Xóa đi hình trước vẽ
+        self.canvas.delete(*self.tria_sail_left_fill_id)
+        self.tria_sail_left , self.tria_sail_left_id, self.tria_sail_left_fill_id=self.draw_right_triangle(self.tria_sail_left[0,0],self.tria_sail_left[0,1],-10,20, 'down')
+        
+        self.tria_sail_right = self.xoay_goc_x_do(self.tria_sail_right, deg)
+        self.canvas.delete(*self.tria_sail_right_id) #Xóa đi hình trước vẽ
+        self.canvas.delete(*self.tria_sail_right_fill_id)
+        self.tria_sail_right , self.tria_sail_right_id, self.tria_sail_right_fill_id=self.draw_right_triangle(self.tria_sail_right[0,0],self.tria_sail_right[0,1],10,30, 'down')
+
+        self.rec_body = self.xoay_goc_x_do(self.rec_body, deg)
+        self.canvas.delete(*self.rec_body_id) #Xóa đi hình trước vẽ
+        self.canvas.delete(*self.rec_body_fill_id)
+        self.rec_body , self.rec_body_id, self.rec_body_fill_id=self.draw_filled_rectangle(self.rec_body[0,0],self.rec_body[0,1],self.rec_body[1,0], self.rec_body[1,1], bool_left_right=0)
+
+        self.rec_sail = self.xoay_goc_x_do(self.rec_sail, deg)
+        self.canvas.delete(*self.rec_sail_id) #Xóa đi hình trước vẽ
+        self.rec_sail , self.rec_sail_id=self.draw_rectangle(self.rec_sail[0,0],self.rec_sail[0,1],self.rec_sail[1,0], self.rec_sail[1,1])        
+    
+    # def dichchuyenvaxoay_sailboat(self, deg):
+    #     x=-self.tria_body_right[1,0]-1
+    #     print(x)
+    #     y=-self.tria_body_right[1,1]-1
+    #     print(y)
+    #     self.tria_body_right = self.tinh_tien(self.tria_body_right, x, y)
+    #     self.tria_body_left = self.tinh_tien(self.tria_body_left, x, y)
+    #     self.tria_sail_left = self.tinh_tien(self.tria_sail_left, x, y)
+    #     self.tria_sail_right = self.tinh_tien(self.tria_sail_right, x, y)
+    #     self.rec_body = self.tinh_tien(self.rec_body, x, y)
+    #     self.rec_sail = self.tinh_tien(self.rec_sail, x, y)
+    #     self.tria_body_left = self.xoay_goc_x_do(self.tria_body_left, deg)
+    #     self.tria_body_right = self.xoay_goc_x_do(self.tria_body_right, deg)
+    #     self.tria_sail_left = self.xoay_goc_x_do(self.tria_sail_left, deg)
+    #     self.tria_sail_right = self.xoay_goc_x_do(self.tria_sail_right, deg)
+    #     self.rec_body = self.xoay_goc_x_do(self.rec_body, deg)
+        
+    #     print(self.tria_body_left)
+    #     pass
+
     def tinh_tien_sailboat(self, x, y):
         
         self.tria_body_left = self.tinh_tien(self.tria_body_left, x, y)
@@ -90,7 +160,8 @@ class Graphics2D(Frame):
         self.rec_sail = self.tinh_tien(self.rec_sail, x, y)
         self.canvas.delete(*self.rec_sail_id) #Xóa đi hình trước vẽ
         self.rec_sail , self.rec_sail_id=self.draw_rectangle(self.rec_sail[0,0],self.rec_sail[0,1],self.rec_sail[1,0], self.rec_sail[1,1])
-        #print(x, y)
+
+        return x,y
 
     def draw_sailboat(self, x0, y0):
         self.tria_body_left, self.tria_body_left_id, self.tria_body_left_fill_id = self.draw_right_triangle(x0, y0, -10, -10, bool_canh_ke=0)
@@ -100,7 +171,7 @@ class Graphics2D(Frame):
         self.rec_sail, self.rec_sail_id = self.draw_rectangle (x0+14 ,y0+5,x0+16, y0)
         self.tria_sail_left, self.tria_sail_left_id, self.tria_sail_left_fill_id = self.draw_right_triangle(x0+14, y0+5, -10, 20, fill_direction='down')
         self.tria_sail_right, self.tria_sail_right_id, self.tria_sail_right_fill_id = self.draw_right_triangle(x0+16, y0+5, 10, 30, fill_direction='down')
-        pass
+        return x0, y0
         
     #list vật thể
     def draw_2d_main(self):
@@ -113,7 +184,7 @@ class Graphics2D(Frame):
         self.draw_bird3(-35, 70)
         self.canvas.create_rectangle(-120, 0, 120, -70, fill='blue', outline='blue')
         self.draw_sea(-120, 0, 120, -70)
-        self.draw_sailboat(-110, -40)
+        self.x0_sailboat, self.y0_sailboat = self.draw_sailboat(-110, -40)
         
             
     def create_canvas(self):
@@ -294,14 +365,14 @@ class Graphics2D(Frame):
 
         while x >= y:
             points.extend([
-                (x_center + x, y_center + y),
-                (x_center - x, y_center + y),
-                (x_center + x, y_center - y),
-                (x_center - x, y_center - y),
-                (x_center + y, y_center + x),
-                (x_center - y, y_center + x),
-                (x_center + y, y_center - x),
-                (x_center - y, y_center - x)
+                self.put_pixel((x_center + x, y_center + y)),
+                self.put_pixel((x_center - x, y_center + y)),
+                self.put_pixel((x_center + x, y_center - y)),
+                self.put_pixel((x_center - x, y_center - y)),
+                self.put_pixel((x_center + y, y_center + x)),
+                self.put_pixel((x_center - y, y_center + x)),
+                self.put_pixel((x_center + y, y_center - x)),
+                self.put_pixel((x_center - y, y_center - x))
             ])
 
             y += 1
@@ -311,9 +382,7 @@ class Graphics2D(Frame):
             else:
                 x -= 1
                 p = p + 2*y - 2*x + 1
-
-        for point in points:
-            self.put_pixel(point[0], point[1])
+        return np.arr(([x_center, y_center, 1])), radius
 
     def draw_rectangle(self, x1, y1, x2, y2, color="green"):
 

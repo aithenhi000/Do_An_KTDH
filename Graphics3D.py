@@ -144,7 +144,7 @@ class Graphics3D(Frame):
             canvas.create_line(0, y, self.width, y, fill="#EADBC8")
 
         # X AXIS
-        self.create_axis_3D(100, 'x', 'red')
+        self.create_axis_3D(60, 'x', 'red')
 
         # Y AXIS
         self.create_axis_3D(100, 'y', 'green')
