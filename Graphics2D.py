@@ -106,15 +106,16 @@ class Graphics2D(Frame):
         self.clear_canvas()
     
         self.draw_mountain(-110, 55)
-        self.draw_sun(40, 60)
-        self.draw_bird1(-100, 65)
-        self.draw_bird2(-80, 55)
-        self.draw_bird3(-35, 70)
+        
+        self.draw_bird1(-100, 65, fill='black')
+        self.draw_bird2(-80, 55, fill='black')
+        self.draw_bird3(-35, 70, fill='black')
         self.canvas.create_rectangle(-120, 0, 120, -70, fill='blue', outline='blue')
         self.draw_sea(-120, 0, 120, -70)
+        self.draw_cloud(-20, 45)
         self.draw_sailboat(-110, -40)
+        self.draw_sun(40, 60)
         
-            
     def create_canvas(self):
         self.canvas = Canvas(self, width=self.width, height=self.height, bg="#FEFAF6")
         self.canvas.pack(side=LEFT)
@@ -168,7 +169,7 @@ class Graphics2D(Frame):
         pixel_id=self.canvas.create_rectangle(adjusted_x-2, adjusted_y-2, adjusted_x+2, adjusted_y+2, fill=color, outline=outline)
         return pixel_id
     
-    def draw_line(self, x1, y1, x2, y2, color="green"):
+    def draw_line(self, x1, y1, x2, y2, color="green", outline='black'):
         arr=[]
         x1=round(x1)
         y1=round(y1)
@@ -190,7 +191,7 @@ class Graphics2D(Frame):
                 else:
                     p += f1
                     y += y_step
-                arr.append(self.put_pixel(x,y, color))
+                arr.append(self.put_pixel(x,y, color=color, outline=outline))
         else:
             p=2*dx-dy
             f1 = 2 * (dx - dy)
@@ -202,10 +203,10 @@ class Graphics2D(Frame):
                 else:
                     p += f1
                     x += x_step
-                arr.append(self.put_pixel(x,y))
+                arr.append(self.put_pixel(x,y, color=color, outline=outline))
         return arr
       
-    def draw_line_background(self, x1, y1, x2, y2, direction, draw_to, color='red'):
+    def draw_line_background(self, x1, y1, x2, y2, direction, draw_to, color='green', outline='black', fill='red'):
         arr=[]
         arr_fill=[]
         x1=round(x1)
@@ -231,24 +232,24 @@ class Graphics2D(Frame):
                     if direction=='right':
                         x_background=x+1
                         while(x_background<=draw_to-1):
-                            arr_fill.append(self.put_pixel(x_background,y,color,color))
+                            arr_fill.append(self.put_pixel(x_background,y,color=fill, outline=fill))
                             x_background+=1
                     elif direction=='left':
-                        x_background=x+1
-                        while(x_background<=draw_to+1):
-                            arr_fill.append(self.put_pixel(x_background,y,color,color))
+                        x_background=x-1
+                        while(x_background>=draw_to+1):
+                            arr_fill.append(self.put_pixel(x_background,y,color=fill, outline=fill))
                             x_background-=1
                 if direction=='up':
                         y_background=y+1
                         while(y_background<=draw_to-1):
-                            arr_fill.append(self.put_pixel(x,y_background,color,color))
+                            arr_fill.append(self.put_pixel(x,y_background,color=fill, outline=fill))
                             y_background+=1
                 elif direction=='down':
                     y_background=y-1
                     while(y_background>=draw_to+1):
-                        arr_fill.append(self.put_pixel(x,y_background,color,color))
+                        arr_fill.append(self.put_pixel(x,y_background,color=fill, outline=fill))
                         y_background-=1
-                arr.append(self.put_pixel(x,y))
+                arr.append(self.put_pixel(x,y, color=color, outline=outline))
         else:
             p=2*dx-dy
             f1 = 2 * (dx - dy)
@@ -263,56 +264,111 @@ class Graphics2D(Frame):
                     if direction=='up':
                         y_background=y+1
                         while(y_background<=draw_to-1):
-                            arr_fill.append(self.put_pixel(x,y_background,color,color))
+                            arr_fill.append(self.put_pixel(x,y_background,color=fill, outline=fill))
                             y_background+=1
                     elif direction=='down':
                         y_background=y-1
                         while(y_background>=draw_to+1):
-                            arr_fill.append(self.put_pixel(x,y_background,color,color))
+                            arr_fill.append(self.put_pixel(x,y_background,color=fill, outline=fill))
                             y_background-=1
                 if direction=='right':
                     x_background=x+1
                     while(x_background<=draw_to-1):
-                        arr_fill.append(self.put_pixel(x_background,y,color,color))
+                        arr_fill.append(self.put_pixel(x_background,y,color=fill, outline=fill))
                         x_background+=1
                 elif direction=='left':
-                    x_background=x+1
-                    while(x_background<=draw_to+1):
-                        arr_fill.append(self.put_pixel(x_background,y,color,color))
+                    x_background=x-1
+                    while(x_background>=draw_to+1):
+                        arr_fill.append(self.put_pixel(x_background,y,color=fill, outline=fill))
                         x_background-=1
-                arr.append(self.put_pixel(x,y))
+                arr.append(self.put_pixel(x,y, color=color, outline=outline))
                     
         return arr, arr_fill
     
+    def draw_1_line_background(self, x0, y0, direction, draw_to, color='red'):
+        arr_fill=[]
+        x=round(x0)
+        y=round(y0)
+        
+        if direction=='up':
+            y_background=y+1
+            while(y_background<=draw_to-1):
+                arr_fill.append(self.put_pixel(x,y_background,color,color))
+                y_background+=1
+        elif direction=='down':
+            y_background=y-1
+            while(y_background>=draw_to+1):
+                arr_fill.append(self.put_pixel(x,y_background,color,color))
+                y_background-=1
+        elif direction=='right':
+            x_background=x+1
+            while(x_background<=draw_to-1):
+                arr_fill.append(self.put_pixel(x_background,y,color,color))
+                x_background+=1
+        elif direction=='left':
+            x_background=x-1
+            while(x_background>=draw_to+1):
+                arr_fill.append(self.put_pixel(x_background,y,color,color))
+                x_background-=1
+                
+        return arr_fill
+ 
     def draw_circle(self, x_center, y_center, radius):
         x = radius
         y = 0
         p = 1 - radius
 
-        points = []
+        arr = []
+        arr_fill = []
 
         while x >= y:
-            points.extend([
-                (x_center + x, y_center + y),
-                (x_center - x, y_center + y),
-                (x_center + x, y_center - y),
-                (x_center - x, y_center - y),
-                (x_center + y, y_center + x),
-                (x_center - y, y_center + x),
-                (x_center + y, y_center - x),
-                (x_center - y, y_center - x)
-            ])
+            arr.append(self.put_pixel(x_center + y, y_center + x))
+            arr_fill.extend(self.draw_1_line_background(x_center + y, y_center + x, 'down', y_center))
+            arr.append(self.put_pixel(x_center + x, y_center + y))
+            arr_fill.extend(self.draw_1_line_background(x_center + x, y_center + y, 'left', x_center))
+            arr.append(self.put_pixel(x_center + x, y_center - y))
+            arr_fill.extend(self.draw_1_line_background(x_center + x, y_center - y, 'left', x_center))
+            arr.append(self.put_pixel(x_center + y, y_center - x))
+            arr_fill.extend(self.draw_1_line_background(x_center + y, y_center - x, 'up', y_center))
+               
+            arr.append(self.put_pixel(x_center - y, y_center - x))
+            arr_fill.extend(self.draw_1_line_background(x_center - y, y_center - x, 'up', y_center))
+            arr.append(self.put_pixel(x_center - x, y_center + y))
+            arr_fill.extend(self.draw_1_line_background(x_center - x, y_center - y, 'right', x_center))
+            arr.append(self.put_pixel(x_center - y, y_center + x))
+            arr_fill.extend(self.draw_1_line_background(x_center - x, y_center + y, 'right', x_center))
+            arr.append(self.put_pixel(x_center - x, y_center - y))
+            arr_fill.extend(self.draw_1_line_background(x_center - y, y_center + x, 'down', y_center))
 
             y += 1
-
             if p <= 0:
                 p = p + 2*y + 1
             else:
                 x -= 1
                 p = p + 2*y - 2*x + 1
+            
+        return np.array(([x_center, y_center, radius])), arr
 
-        for point in points:
-            self.put_pixel(point[0], point[1])
+    def draw_filled_circle(self, x_center, y_center, radius, color='black'):
+        x = radius
+        y = 0
+        p = 1 - radius
+        arr = []
+        
+        while x >= y:
+            arr.append(self.put_pixel(x_center + x, y_center + y))
+            arr.append(self.put_pixel(x_center - x, y_center + y))
+            arr.append(self.put_pixel(x_center + x, y_center - y))
+            arr.append(self.put_pixel(x_center - x, y_center - y))
+
+            y += 1
+            if p <= 0:
+                p = p + 2*y + 1
+            else:
+                x -= 1
+                p = p + 2*y - 2*x + 1
+            
+        return np.array(([x_center, y_center, radius])), arr
 
     def draw_rectangle(self, x1, y1, x2, y2, color="green"):
 
@@ -323,15 +379,20 @@ class Graphics2D(Frame):
 
         return np.array(([x1,y1,1], [x2,y2,1])), arr
     
-    def draw_filled_rectangle(self, x1, y1, x2, y2, bool_left_right=1):
-        arr, arr_fill=self.draw_line_background(x1, y1, x2, y1, 'down', y2)
-        arr.extend(self.draw_line(x2, y2, x1, y2))        
-        if bool_left_right==1:
-            arr.extend(self.draw_line(x2, y1, x2, y2))
-            arr.extend(self.draw_line(x1, y2, x1, y1))
+    def draw_filled_rectangle(self, x1, y1, x2, y2, bool_left_right=1, color='green', outline='black', fill='red'):
+        
+        if y1<y2:
+            arr, arr_fill=self.draw_line_background(x1, y1, x2, y1, 'up', y2, color=color, fill=fill, outline=outline)
         else:
-            arr.append(self.put_pixel(x1,y1))
-            arr.append(self.put_pixel(x1,y2))
+            arr, arr_fill=self.draw_line_background(x1, y1, x2, y1, 'down', y2, color=color, fill=fill, outline=outline)
+        
+        arr.extend(self.draw_line(x2, y2, x1, y2, color=color, outline=outline))        
+        if bool_left_right==1:
+            arr.extend(self.draw_line(x2, y1, x2, y2, color=color, outline=outline))
+            arr.extend(self.draw_line(x1, y2, x1, y1, color=color, outline=outline))
+        else:
+            arr.append(self.put_pixel(x1, y1, color=color, outline=outline))
+            arr.append(self.put_pixel(x1, y2, color=color, outline=outline))
 
         return np.array(([x1,y1,1], [x2,y2,1])), arr, arr_fill
 
@@ -369,23 +430,28 @@ class Graphics2D(Frame):
             arr.append(self.put_pixel(x3,y3))
         return np.array(([x1,y1,1],[x2,y2,1],[x3,y3,1])), arr, arr_fill
         
-    def draw_ellipse(self, xc, yc, a, b, color="green"):
+    def draw_ellipse(self, xc, yc, a, b, color='black', outline='black', fill='black'):
         x = 0
         y = b
 
-        # Decision parameter of region 1
         d1 = (b * b) - (a * a * b) + (0.25 * a * a)
         dx = 2 * b * b * x
         dy = 2 * a * a * y
 
         arr=[]
-        # For region 1
+        arr_fill=[]
+        
         while dx < dy:
-            # Add the points corresponding to the 4 quadrants
-            arr.append(self.put_pixel(xc+x, yc+y, color))
-            arr.append(self.put_pixel(xc-x, yc+y, color))
-            arr.append(self.put_pixel(xc+x, yc-y, color))
-            arr.append(self.put_pixel(xc-x, yc-y, color))
+            arr_fill.extend(self.draw_1_line_background(xc+x, yc+y, 'down', yc, color=fill))
+            arr_fill.extend(self.draw_1_line_background(xc-x, yc+y, 'down', yc, color=fill))
+            arr_fill.extend(self.draw_1_line_background(xc+x, yc-y, 'up', yc, color=fill))
+            arr_fill.extend(self.draw_1_line_background(xc-x, yc-y, 'up', yc, color=fill))
+
+            arr.append(self.put_pixel(xc+x, yc+y, color=color, outline=outline))
+            arr.append(self.put_pixel(xc-x, yc+y, color=color, outline=outline))
+            arr.append(self.put_pixel(xc+x, yc-y, color=color, outline=outline))
+            arr.append(self.put_pixel(xc-x, yc-y, color=color, outline=outline))
+            
             if d1 < 0:
                 x += 1
                 dx = dx + (2 * b * b)
@@ -397,17 +463,20 @@ class Graphics2D(Frame):
                 dy = dy - (2 * a * a)
                 d1 = d1 + dx - dy + (b * b)    
 
-            # Decision parameter of region 2
         d2 = ((b * b) * ((x + 0.5) * (x + 0.5))) + ((a * a) * ((y - 1) * (y - 1))) - (a * a * b * b)
 
-        # For region 2
         while y >= 0:
-            # Add the points corresponding to the 4 quadrants
-            arr.append(self.put_pixel(xc+x, yc+y, color))
-            arr.append(self.put_pixel(xc-x, yc+y, color))
-            arr.append(self.put_pixel(xc+x, yc-y, color))
-            arr.append(self.put_pixel(xc-x, yc-y, color))
+            arr_fill.extend(self.draw_1_line_background(xc+x, yc+y, 'left', xc, color=fill))
+            arr_fill.extend(self.draw_1_line_background(xc-x, yc+y, 'right', xc, color=fill))
+            arr_fill.extend(self.draw_1_line_background(xc+x, yc-y, 'left', xc, color=fill))
+            arr_fill.extend(self.draw_1_line_background(xc-x, yc-y, 'right', xc, color=fill))
 
+            arr.append(self.put_pixel(xc+x, yc+y, color=color, outline=outline))
+            arr.append(self.put_pixel(xc-x, yc+y, color=color, outline=outline))
+            arr.append(self.put_pixel(xc+x, yc-y, color=color, outline=outline))
+            arr.append(self.put_pixel(xc-x, yc-y, color=color, outline=outline))
+            arr_fill.append(self.put_pixel(xc,yc,color='white', outline='white'))
+            
             if d2 > 0:
                 y -= 1
                 dy = dy - (2 * a * a)
@@ -461,20 +530,22 @@ class Graphics2D(Frame):
 
     def draw_mountain(self, x0, y0):
         truc_x = 0
-        self.draw_line_background(x0, y0, -100, 35, 'down', truc_x, color='green')
+        fill='green'
+        self.draw_line_background(x0, y0, -100, 35, 'down', truc_x, color='green', fill=fill)
         # self.draw_line(x0, y0, -100, 35)
-        self.draw_line_background(-100, 35, -60, 45, 'down', truc_x, color='green')
+        self.draw_line_background(-100, 35, -60, 45, 'down', truc_x, color='green', fill=fill)
         # self.draw_line(-100, 35, -60, 45)
-        self.draw_line_background(-120, 35, -110, 55, 'down', truc_x, color='green')
+        self.draw_line_background(-120, 35, -110, 55, 'down', truc_x, color='green', fill=fill)
         # self.draw_line(-120, 35, -110, 55)
-        self.draw_line_background(-60, 45, -10, 25, 'down', truc_x, color='green')
+        self.draw_line_background(-60, 45, -10, 25, 'down', truc_x, color='green', fill=fill)
         # self.draw_line(-60, 45, -10, 25)
-        self.draw_line_background(-10, 25, 30, 42, 'down', truc_x, color='green')
+        self.draw_line_background(-10, 25, 30, 42, 'down', truc_x, color='green', fill=fill)
         # self.draw_line(-10, 25, 30, 42)
-        self.draw_line_background(30, 42, 70, 25, 'down', truc_x, color='green')
+        self.draw_line_background(30, 42, 70, 25, 'down', truc_x, color='green', fill=fill)
         # self.draw_line(30, 42, 70, 25)
-        self.draw_line_background(70, 25, 120, 68, 'down', truc_x, color='green')
+        self.draw_line_background(70, 25, 120, 68, 'down', truc_x, color='green', fill=fill)
         # self.draw_line(70, 25, 120, 68)
+        self.draw_line(-120,0,120,0)
 
     def draw_sun(self, x0, y0):
         self.draw_circle(x0, y0, 10)
@@ -486,46 +557,62 @@ class Graphics2D(Frame):
         self.draw_line(48, 67, 50, 69)
         self.draw_line(48, 50, 50, 48)
         self.draw_line(32, 50, 30, 48)
+        self.put_pixel(x0, y0, color='red', outline='red')
 
-    def draw_bird1(self, x0, y0):
-        self.draw_ellipse(x0, y0, 1, 0)
-        self.draw_ellipse(-99, 65, 1, 0)
-        self.draw_ellipse(-98, 64, 1, 0)
-        self.draw_ellipse(-97, 65, 1, 0)
-        self.draw_ellipse(-96, 65, 1, 0)
-        self.draw_ellipse(-101, 64, 1, 0)
-        self.draw_ellipse(-95, 64, 1, 0)
-        self.draw_ellipse(-98, 63, 1, 0)
-        self.draw_ellipse(-102, 63, 1, 0)
-        self.draw_ellipse(-94, 63, 1, 0)
+    def draw_bird1(self, x0, y0, color='black', outline='black', fill='black'):
+        self.draw_ellipse(x0, y0, 1, 0, color=color, outline=outline, fill=fill)
+        self.draw_ellipse(-99, 65, 1, 0, color=color, outline=outline, fill=fill)
+        self.draw_ellipse(-98, 64, 1, 0, color=color, outline=outline, fill=fill)
+        self.draw_ellipse(-97, 65, 1, 0, color=color, outline=outline, fill=fill)
+        self.draw_ellipse(-96, 65, 1, 0, color=color, outline=outline, fill=fill)
+        self.draw_ellipse(-101, 64, 1, 0, color=color, outline=outline, fill=fill)
+        self.draw_ellipse(-95, 64, 1, 0, color=color, outline=outline, fill=fill)
+        self.draw_ellipse(-98, 63, 1, 0, color=color, outline=outline, fill=fill)
+        self.draw_ellipse(-102, 63, 1, 0, color=color, outline=outline, fill=fill)
+        self.draw_ellipse(-94, 63, 1, 0, color=color, outline=outline, fill=fill)
 
-    def draw_bird2(self, x0, y0):
-        self.draw_ellipse(x0, y0, 1, 0)
-        self.draw_ellipse(-99 + 20, 65 - 10, 1, 0)
-        self.draw_ellipse(-98 + 20, 64 - 10, 1, 0)
-        self.draw_ellipse(-97 + 20, 65 - 10, 1, 0)
-        self.draw_ellipse(-96 + 20, 65 - 10, 1, 0)
-        self.draw_ellipse(-101 + 20, 64 - 10, 1, 0)
-        self.draw_ellipse(-95 + 20, 64 - 10, 1, 0)
-        self.draw_ellipse(-98 + 20, 63 - 10, 1, 0)
-        self.draw_ellipse(-102 + 20, 63 - 10, 1, 0)
-        self.draw_ellipse(-94 + 20, 63 - 10, 1, 0)
 
-    def draw_bird3(self, x0, y0):
-        self.draw_ellipse(x0, y0, 1, 0)
-        self.draw_ellipse(-99 + 65, 65 + 5, 1, 0)
-        self.draw_ellipse(-98 + 65, 64 + 5, 1, 0)
-        self.draw_ellipse(-97 + 65, 65 + 5, 1, 0)
-        self.draw_ellipse(-96 + 65, 65 + 5, 1, 0)
-        self.draw_ellipse(-101 + 65, 64 + 5, 1, 0)
-        self.draw_ellipse(-95 + 65, 64 + 5, 1, 0)
-        self.draw_ellipse(-98 + 65, 63 + 5, 1, 0)
-        self.draw_ellipse(-102 + 65, 63 + 5, 1, 0)
-        self.draw_ellipse(-94 + 65, 63 + 5, 1, 0)
+    def draw_bird2(self, x0, y0, color='black', outline='black', fill='black'):
+        self.draw_ellipse(x0, y0, 1, 0, color=color, outline=outline, fill=fill)
+        self.draw_ellipse(-99 + 20, 65 - 10, 1, 0, color=color, outline=outline, fill=fill)
+        self.draw_ellipse(-98 + 20, 64 - 10, 1, 0, color=color, outline=outline, fill=fill)
+        self.draw_ellipse(-97 + 20, 65 - 10, 1, 0, color=color, outline=outline, fill=fill)
+        self.draw_ellipse(-96 + 20, 65 - 10, 1, 0, color=color, outline=outline, fill=fill)
+        self.draw_ellipse(-101 + 20, 64 - 10, 1, 0, color=color, outline=outline, fill=fill)
+        self.draw_ellipse(-95 + 20, 64 - 10, 1, 0, color=color, outline=outline, fill=fill)
+        self.draw_ellipse(-98 + 20, 63 - 10, 1, 0, color=color, outline=outline, fill=fill)
+        self.draw_ellipse(-102 + 20, 63 - 10, 1, 0, color=color, outline=outline, fill=fill)
+        self.draw_ellipse(-94 + 20, 63 - 10, 1, 0, color=color, outline=outline, fill=fill)
+
+    def draw_bird3(self, x0, y0, color='black', outline='black', fill='black'):
+        self.draw_ellipse(x0, y0, 1, 0, color=color, outline=outline, fill=fill)
+        self.draw_ellipse(-99 + 65, 65 + 5, 1, 0, color=color, outline=outline, fill=fill)
+        self.draw_ellipse(-98 + 65, 64 + 5, 1, 0, color=color, outline=outline, fill=fill)
+        self.draw_ellipse(-97 + 65, 65 + 5, 1, 0, color=color, outline=outline, fill=fill)
+        self.draw_ellipse(-96 + 65, 65 + 5, 1, 0, color=color, outline=outline, fill=fill)
+        self.draw_ellipse(-101 + 65, 64 + 5, 1, 0, color=color, outline=outline, fill=fill)
+        self.draw_ellipse(-95 + 65, 64 + 5, 1, 0, color=color, outline=outline, fill=fill)
+        self.draw_ellipse(-98 + 65, 63 + 5, 1, 0, color=color, outline=outline, fill=fill)
+        self.draw_ellipse(-102 + 65, 63 + 5, 1, 0, color=color, outline=outline, fill=fill)
+        self.draw_ellipse(-94 + 65, 63 + 5, 1, 0, color=color, outline=outline, fill=fill)
    
     def draw_sea(self, x1, y1, x2, y2):
-        adjusted_x1 = self.width/2 + x1*5
-        adjusted_y1 = self.height/2 - y1*5
-        adjusted_x2 = self.width/2 + x2*5
-        adjusted_y2 = self.height/2 - y2*5
-        self.canvas.create_rectangle(adjusted_x1, adjusted_y1, adjusted_x2, adjusted_y2, fill='blue', outline='blue')
+        x1,y1=self.adjust_to_screen(x1,y1)
+        x2,y2=self.adjust_to_screen(x2,y2)
+        self.canvas.create_rectangle(x1+2.5, y1, x2+0.5, y2, fill='blue', outline='blue')
+
+    def draw_cloud(self, x, y):  
+        self.draw_ellipse(x + 20, y + 5, 10, 5, color='white', outline='white', fill='white')
+        self.draw_ellipse(x, y + 5, 10, 5, color='white', outline='white', fill='white')
+        self.draw_ellipse(x + 10, y + 15, 10, 5, color='white', outline='white', fill='white')
+        self.draw_ellipse(x, y + 10, 8, 6, color='white', outline='white', fill='white')
+        self.draw_ellipse(x + 20, y + 10, 8, 4, color='white', outline='white', fill='white')
+        
+        self.draw_filled_rectangle(x,y,0,50, color='white', outline='white', fill='white')
+
+###########
+
+    def adjust_to_screen(self, x, y):
+        adjusted_x = self.width/2 + x*5
+        adjusted_y = self.height/2 - y*5
+        return adjusted_x, adjusted_y
