@@ -96,28 +96,28 @@ class Home(Frame):
             canvas.create_line(x, 0, x, self.height, fill="#EADBC8")
         for y in range(0, self.height, self.grid_size):
             canvas.create_line(0, y, self.width, y, fill="#EADBC8")
-        # X axis
-        canvas.create_line(0, self.origin[1], self.width, self.origin[1])
-        for x in range(0, self.width, 50):
-            canvas.create_rectangle(
-                x - 1, self.origin[1] - 1, x + 1, self.origin[1] + 1, fill="red"
-            )
-            canvas.create_text(
-                x,
-                self.origin[1] + 8,
-                text=str(int((x - self.width / 2) / 5)),
-                font=("Arial", 7),
-            )
+        # # X axis
+        # canvas.create_line(0, self.origin[1], self.width, self.origin[1])
+        # for x in range(0, self.width, 50):
+        #     canvas.create_rectangle(
+        #         x - 1, self.origin[1] - 1, x + 1, self.origin[1] + 1, fill="red"
+        #     )
+        #     canvas.create_text(
+        #         x,
+        #         self.origin[1] + 8,
+        #         text=str(int((x - self.width / 2) / 5)),
+        #         font=("Arial", 7),
+        #     )
 
-        # Y axis
-        canvas.create_line(self.origin[0], 0, self.origin[0], self.height)
-        for y in range(0, self.height, 50):
-            canvas.create_rectangle(
-                self.origin[0] - 1, y - 1, self.origin[0] + 1, y + 1, fill="red"
-            )
-            canvas.create_text(
-                self.origin[0] + 9,
-                y,
-                text=str(int(-(y - self.height / 2) / 5)),
-                font=("Arial", 7),
-            )
+        # # Y axis
+        # canvas.create_line(self.origin[0], 0, self.origin[0], self.height)
+        # for y in range(0, self.height, 50):
+        #     canvas.create_rectangle(
+        #         self.origin[0] - 1, y - 1, self.origin[0] + 1, y + 1, fill="red"
+        #     )
+        #     canvas.create_text(
+        #         self.origin[0] + 9,
+        #         y,
+        #         text=str(int(-(y - self.height / 2) / 5)),
+        #         font=("Arial", 7),
+        #     )

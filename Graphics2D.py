@@ -42,19 +42,17 @@ class Graphics2D(Frame):
         self.fr=LabelFrame(self, text='THÔNG TIN VẬT THỂ DI CHUYỂN',borderwidth=2, relief="ridge", width=200, height=100)
         self.fr.pack()
             
-        self.label_1 = Label(self.fr, text="Thuyền buồm: (0, 0)")
-        self.label_2 = Label(self.fr, text="Cánh buồm phải (Sailboat): (0, 0)")
-        self.label_3 = Label(self.fr, text="Thân tàu (Sailboat): (0, 0)")
+        self.label_1 = Label(self.fr, text="Thuyền buồm (Mũi thuyền): (0, 0)")
+        self.label_2 = Label(self.fr, text="Thuyền buồm (Điểm cuối): (0, 0)")
         
         
         self.label_1.pack()
         self.label_2.pack()
-        self.label_3.pack()
         
 
     
     def moving_button(self):
-        self.DoiXung_cloud([1,-1], color="#CAF4FF")
+
         self.moving_check = not self.moving_check  # Đảo ngược trạng thái của moving_check
         if self.moving_check:
             self.move_2d()  # Nếu moving_check là True, bắt đầu di chuyển
@@ -65,17 +63,18 @@ class Graphics2D(Frame):
         if self.moving_check:
             
             if (self.count%7)== 0 or (self.count%7)==1:
-                #self.tinh_tien_cloud(5, 0)
+                self.DoiXung_cloud([1,-1], color="#CAF4FF")
                 self.tinh_tien_sailboat(1, 0)
-                #self.after(120, self.move_2d)
+
             elif (self.count%7)==2 or (self.count%7)==3:
-                #self.tinh_tien_cloud(5, 0)
-                
+
+                self.DoiXung_cloud([-1,1], color="#CAF4FF")                
                 self.tinh_tien_sailboat(1, 1)
 
-                #self.after(120, self.move_2d)
             else:
                 self.tinh_tien_sailboat(1, -1)
+            self.label_1.config(text=f"Thuyền buồm (Mũi thuyền): {self.tria_sail_right[0,0],self.tria_sail_right[0,1]}")
+            self.label_2.config(text=f"Thuyền buồm (Điểm cuối): {self.tria_sail_left[0,0],self.tria_sail_left[0,1]}")
             self.after(120, self.move_2d)
             
         else:
@@ -129,7 +128,8 @@ class Graphics2D(Frame):
     #list vật thể
     def draw_2d_main(self):
         self.clear_canvas()
-
+        
+        self.draw_sun(0, 40)
         self.draw_mountain(-110, 55)
         
         self.draw_bird1(-100, 65, fill='black')
@@ -137,11 +137,9 @@ class Graphics2D(Frame):
         self.draw_bird3(-35, 70, fill='black')
         self.canvas.create_rectangle(-120, 0, 120, -70, fill='blue', outline='blue')
         self.draw_sea(-120, 0, 120, -70)
-        self.draw_cloud(-20, 45)
-        self.draw_cloud(40, 80)
         self.draw_cloud(-60, 25)
         self.draw_sailboat(-110, -30)
-        self.draw_sun(0, 40)
+
         
     def create_canvas(self):
         self.canvas = Canvas(self, width=self.width, height=self.height, bg="#FEFAF6")
@@ -607,7 +605,7 @@ class Graphics2D(Frame):
         
     def draw_sun(self, x0, y0):
         self.sun_1, self.sun_1_id, self.sun_1_id_fill = self.draw_circle(x0, y0, 50)
-        self.sun_2, self.sun_2_id, self.sun_2_id_fill = self.draw_dashed_circle(x0, y0, 80, 5)
+        self.sun_2, self.sun_2_id= self.draw_dashed_circle(x0, y0, 80, 5)
 
     def draw_bird1(self, x0, y0, color='black', outline='black', fill='black'):
         self.draw_ellipse(x0, y0, 1, 0, color=color, outline=outline, fill=fill)
@@ -675,27 +673,27 @@ class Graphics2D(Frame):
             
         return pos
     def DoiXung_cloud(self, choice, color="white"):
-        self.cloud_1=self.ti_le(self.cloud_1, 0.8)
-        self.cloud_2=self.ti_le(self.cloud_2, 0.8)
-        self.cloud_3=self.ti_le(self.cloud_3, 0.8)
-        self.cloud_4=self.ti_le(self.cloud_4, 0.8)
-        self.cloud_5=self.ti_le(self.cloud_5, 0.8)
+        # self.cloud_1=self.ti_le(self.cloud_1, 1.4)
+        # self.cloud_2=self.ti_le(self.cloud_2, 1.4)
+        # self.cloud_3=self.ti_le(self.cloud_3, 1.4)
+        # self.cloud_4=self.ti_le(self.cloud_4, 1.4)
+        # self.cloud_5=self.ti_le(self.cloud_5, 1.4)
         self.cloud_1=self.doi_xung(self.cloud_1, choice)
         self.cloud_2=self.doi_xung(self.cloud_2, choice)
         self.cloud_3=self.doi_xung(self.cloud_3, choice)
         self.cloud_4=self.doi_xung(self.cloud_4, choice)
         self.cloud_5=self.doi_xung(self.cloud_5, choice)
         
-        # self.canvas.delete(*self.cloud_1_id)
-        # self.canvas.delete(*self.cloud_2_id)
-        # self.canvas.delete(*self.cloud_3_id)
-        # self.canvas.delete(*self.cloud_4_id)
-        # self.canvas.delete(*self.cloud_5_id)
-        # self.canvas.delete(*self.cloud_1_id_fill)
-        # self.canvas.delete(*self.cloud_2_id_fill)
-        # self.canvas.delete(*self.cloud_3_id_fill)
-        # self.canvas.delete(*self.cloud_4_id_fill)
-        # self.canvas.delete(*self.cloud_5_id_fill)
+        self.canvas.delete(*self.cloud_1_id)
+        self.canvas.delete(*self.cloud_2_id)
+        self.canvas.delete(*self.cloud_3_id)
+        self.canvas.delete(*self.cloud_4_id)
+        self.canvas.delete(*self.cloud_5_id)
+        self.canvas.delete(*self.cloud_1_id_fill)
+        self.canvas.delete(*self.cloud_2_id_fill)
+        self.canvas.delete(*self.cloud_3_id_fill)
+        self.canvas.delete(*self.cloud_4_id_fill)
+        self.canvas.delete(*self.cloud_5_id_fill)
         
         self.cloud_1, self.cloud_1_id, self.cloud_1_id_fill=self.draw_ellipse(self.cloud_1[0], self.cloud_1[1], 5, 5, color=color, outline=color, fill=color)
         self.cloud_2, self.cloud_2_id, self.cloud_2_id_fill=self.draw_ellipse(self.cloud_2[0], self.cloud_2[1], 5, 5, color=color, outline=color, fill=color)
