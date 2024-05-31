@@ -54,81 +54,34 @@ class Graphics2D(Frame):
 
     
     def moving_button(self):
+        self.DoiXung_cloud([1,-1], color="#CAF4FF")
         self.moving_check = not self.moving_check  # Đảo ngược trạng thái của moving_check
         if self.moving_check:
             self.move_2d()  # Nếu moving_check là True, bắt đầu di chuyển
-        
-    def move_2d(self):
-        #self.moving_check = True
-        #if self.moving_check:   #đặt flag moving_check kiểm tra xem có đang di chuyển không
-        
+
+            
+    def move_2d(self):   
         self.count+=1
         if self.moving_check:
-            #print(self.count)
+            
             if (self.count%7)== 0 or (self.count%7)==1:
                 #self.tinh_tien_cloud(5, 0)
                 self.tinh_tien_sailboat(1, 0)
-
-                self.after(120, self.move_2d)
+                #self.after(120, self.move_2d)
             elif (self.count%7)==2 or (self.count%7)==3:
                 #self.tinh_tien_cloud(5, 0)
+                
                 self.tinh_tien_sailboat(1, 1)
-                self.after(120, self.move_2d)
+
+                #self.after(120, self.move_2d)
             else:
                 self.tinh_tien_sailboat(1, -1)
-                self.after(120, self.move_2d)
+            self.after(120, self.move_2d)
+            
         else:
             self.after_cancel(self.after(120, self.move_2d))
             
-    def xoay_sailboat(self, deg):
-        self.tria_body_left = self.xoay_goc_x_do(self.tria_body_left, deg)
-        self.canvas.delete(*self.tria_body_left_id) #Xóa đi hình trước vẽ
-        self.canvas.delete(*self.tria_body_left_fill_id)
-        self.tria_body_left, self.tria_body_left_id, self.tria_body_left_fill_id = self.draw_right_triangle(self.tria_body_left[0,0],self.tria_body_left[0,1],-10,-10, 'up', bool_canh_ke=0)
-        
-        self.tria_body_right = self.xoay_goc_x_do(self.tria_body_right, deg)
-        self.canvas.delete(*self.tria_body_right_id) #Xóa đi hình trước vẽ
-        self.canvas.delete(*self.tria_body_right_fill_id)
-        self.tria_body_right , self.tria_body_right_id, self.tria_body_right_fill_id=self.draw_right_triangle(self.tria_body_right[0,0],self.tria_body_right[0,1],10,-10, 'up', bool_canh_ke=0)
-        
-        self.tria_sail_left = self.xoay_goc_x_do(self.tria_sail_left, deg)
-        self.canvas.delete(*self.tria_sail_left_id) #Xóa đi hình trước vẽ
-        self.canvas.delete(*self.tria_sail_left_fill_id)
-        self.tria_sail_left , self.tria_sail_left_id, self.tria_sail_left_fill_id=self.draw_right_triangle(self.tria_sail_left[0,0],self.tria_sail_left[0,1],-10,20, 'down')
-        
-        self.tria_sail_right = self.xoay_goc_x_do(self.tria_sail_right, deg)
-        self.canvas.delete(*self.tria_sail_right_id) #Xóa đi hình trước vẽ
-        self.canvas.delete(*self.tria_sail_right_fill_id)
-        self.tria_sail_right , self.tria_sail_right_id, self.tria_sail_right_fill_id=self.draw_right_triangle(self.tria_sail_right[0,0],self.tria_sail_right[0,1],10,30, 'down')
-
-        self.rec_body = self.xoay_goc_x_do(self.rec_body, deg)
-        self.canvas.delete(*self.rec_body_id) #Xóa đi hình trước vẽ
-        self.canvas.delete(*self.rec_body_fill_id)
-        self.rec_body , self.rec_body_id, self.rec_body_fill_id=self.draw_filled_rectangle(self.rec_body[0,0],self.rec_body[0,1],self.rec_body[1,0], self.rec_body[1,1], bool_left_right=0)
-
-        self.rec_sail = self.xoay_goc_x_do(self.rec_sail, deg)
-        self.canvas.delete(*self.rec_sail_id) #Xóa đi hình trước vẽ
-        self.rec_sail , self.rec_sail_id=self.draw_rectangle(self.rec_sail[0,0],self.rec_sail[0,1],self.rec_sail[1,0], self.rec_sail[1,1])        
     
-    # def dichchuyenvaxoay_sailboat(self, deg):
-    #     x=-self.tria_body_right[1,0]-1
-    #     print(x)
-    #     y=-self.tria_body_right[1,1]-1
-    #     print(y)
-    #     self.tria_body_right = self.tinh_tien(self.tria_body_right, x, y)
-    #     self.tria_body_left = self.tinh_tien(self.tria_body_left, x, y)
-    #     self.tria_sail_left = self.tinh_tien(self.tria_sail_left, x, y)
-    #     self.tria_sail_right = self.tinh_tien(self.tria_sail_right, x, y)
-    #     self.rec_body = self.tinh_tien(self.rec_body, x, y)
-    #     self.rec_sail = self.tinh_tien(self.rec_sail, x, y)
-    #     self.tria_body_left = self.xoay_goc_x_do(self.tria_body_left, deg)
-    #     self.tria_body_right = self.xoay_goc_x_do(self.tria_body_right, deg)
-    #     self.tria_sail_left = self.xoay_goc_x_do(self.tria_sail_left, deg)
-    #     self.tria_sail_right = self.xoay_goc_x_do(self.tria_sail_right, deg)
-    #     self.rec_body = self.xoay_goc_x_do(self.rec_body, deg)
-        
-    #     print(self.tria_body_left)
-    #     pass
 
     def tinh_tien_sailboat(self, x, y):
         
@@ -160,12 +113,12 @@ class Graphics2D(Frame):
         self.rec_sail = self.tinh_tien(self.rec_sail, x, y)
         self.canvas.delete(*self.rec_sail_id) #Xóa đi hình trước vẽ
         self.rec_sail , self.rec_sail_id=self.draw_rectangle(self.rec_sail[0,0],self.rec_sail[0,1],self.rec_sail[1,0], self.rec_sail[1,1])
-
         return x,y
 
     def draw_sailboat(self, x0, y0):
         self.tria_body_left, self.tria_body_left_id, self.tria_body_left_fill_id = self.draw_right_triangle(x0, y0, -10, -10, bool_canh_ke=0)
         self.tria_body_right, self.tria_body_right_id, self.tria_body_right_fill_id = self.draw_right_triangle(x0+30, y0, 10, -10, bool_canh_ke=0)
+        print(self.tria_body_right)
         self.rec_body, self.rec_body_id, self.rec_body_fill_id = self.draw_filled_rectangle (x0+30, y0, x0, y0-10, bool_left_right=0)
         
         self.rec_sail, self.rec_sail_id = self.draw_rectangle (x0+14 ,y0+5,x0+16, y0)
@@ -185,7 +138,9 @@ class Graphics2D(Frame):
         self.canvas.create_rectangle(-120, 0, 120, -70, fill='blue', outline='blue')
         self.draw_sea(-120, 0, 120, -70)
         self.draw_cloud(-20, 45)
-        self.draw_sailboat(-110, -40)
+        self.draw_cloud(40, 80)
+        self.draw_cloud(-60, 25)
+        self.draw_sailboat(-110, -30)
         self.draw_sun(40, 60)
         
     def create_canvas(self):
@@ -419,7 +374,7 @@ class Graphics2D(Frame):
                 x -= 1
                 p = p + 2*y - 2*x + 1
             
-        return np.array(([x_center, y_center, radius])), arr
+        return np.array(([x_center, y_center, 1])), radius, arr
 
     def draw_filled_circle(self, x_center, y_center, radius, color='black'):
         x = radius
@@ -559,26 +514,20 @@ class Graphics2D(Frame):
                 dx = dx + (2 * b * b)
                 dy = dy - (2 * a * a)
                 d2 = d2 + dx - dy + (a * a)
-        return np.array(([xc,yc,1])), a, b, arr
+        return np.array(([xc,yc,1])), arr, arr_fill
 
     def tinh_tien(self, pos, delta_x, delta_y):
 
         mul_matrix = np.array(([1, 0, 0], [0, 1, 0], [delta_x, delta_y, 1]))
-
-        for x in range(0, pos.shape[0]):
-            pos[x] = np.matmul(pos[x], mul_matrix)
-
-        return pos
-
-    def ti_le(self, pos, ratio):
-        mul_matrix = np.array(([ratio, 0, 0], [0, ratio, 0], [0, 0, 1]))
-
-        if pos.ndim == 1:
-            pos = np.matmul(pos, mul_matrix)
+        if pos.ndim==1:
+            pos=np.matmul(pos, mul_matrix)
         else:
             for x in range(0, pos.shape[0]):
                 pos[x] = np.matmul(pos[x], mul_matrix)
+
         return pos
+
+    
 
     def clear_canvas(self):
         self.canvas.delete('all')
@@ -619,9 +568,10 @@ class Graphics2D(Frame):
         # self.draw_line(70, 25, 120, 68)
         self.draw_line(-120,0,120,0)
 
+        
     def draw_sun(self, x0, y0):
-        self.draw_circle(x0, y0, 10)
-        self.draw_line(40, 71, 40, 73)
+        self.sun, self.rad, self.sun_id = self.draw_circle(x0, y0, 10)
+        self.l1=self.draw_line(40, 71, 40, 73)
         self.draw_line(51, 60, 53, 60)
         self.draw_line(40, 48, 40, 46)
         self.draw_line(29, 60, 27, 60)
@@ -672,16 +622,71 @@ class Graphics2D(Frame):
         x1,y1=self.adjust_to_screen(x1,y1)
         x2,y2=self.adjust_to_screen(x2,y2)
         self.canvas.create_rectangle(x1+2.5, y1, x2+0.5, y2, fill='blue', outline='blue')
-
-    def draw_cloud(self, x, y):  
-        self.draw_ellipse(x + 20, y + 5, 10, 5, color='white', outline='white', fill='white')
-        self.draw_ellipse(x, y + 5, 10, 5, color='white', outline='white', fill='white')
-        self.draw_ellipse(x + 10, y + 15, 10, 5, color='white', outline='white', fill='white')
-        self.draw_ellipse(x, y + 10, 8, 6, color='white', outline='white', fill='white')
-        self.draw_ellipse(x + 20, y + 10, 8, 4, color='white', outline='white', fill='white')
+    def doi_xung(self, pos, choice):
+        mul_matrix = np.array(( [-choice[1], 0,          0],
+                                [0,         -choice[0],  0],
+                                [0,          0,          1]))
         
-        self.draw_filled_rectangle(x,y,0,50, color='white', outline='white', fill='white')
+        if pos.ndim == 1:
+            pos = np.matmul(pos, mul_matrix)
+        else:
+            for x in range(0,pos.shape[0]):        
+                pos[x]=np.matmul(pos[x],mul_matrix)
+        
+        return pos
+    def ti_le(self, pos, ratio):
+    
+        mul_matrix = np.array(( [ratio, 0,      0],
+                                [0,     ratio,  0],
+                                [0,     0,      1]))
+        if pos.ndim == 1:
+            pos = np.matmul(pos, mul_matrix)
+        else :
+            for x in range(0,pos.shape[0]):        
+                pos[x]=np.matmul(pos[x],mul_matrix)
+            
+        return pos
+    def DoiXung_cloud(self, choice, color="white"):
+        self.cloud_1=self.doi_xung(self.cloud_1, choice)
+        self.cloud_2=self.doi_xung(self.cloud_2, choice)
+        self.cloud_3=self.doi_xung(self.cloud_3, choice)
+        self.cloud_4=self.doi_xung(self.cloud_4, choice)
+        self.cloud_5=self.doi_xung(self.cloud_5, choice)
+        self.cloud_1=self.ti_le(self.cloud_1, 0.8)
+        self.cloud_2=self.ti_le(self.cloud_2, 0.8)
+        self.cloud_3=self.ti_le(self.cloud_3, 0.8)
+        self.cloud_4=self.ti_le(self.cloud_4, 0.8)
+        self.cloud_5=self.ti_le(self.cloud_5, 0.8)
+        # self.canvas.delete(*self.cloud_1_id)
+        # self.canvas.delete(*self.cloud_2_id)
+        # self.canvas.delete(*self.cloud_3_id)
+        # self.canvas.delete(*self.cloud_4_id)
+        # self.canvas.delete(*self.cloud_5_id)
+        # self.canvas.delete(*self.cloud_1_id_fill)
+        # self.canvas.delete(*self.cloud_2_id_fill)
+        # self.canvas.delete(*self.cloud_3_id_fill)
+        # self.canvas.delete(*self.cloud_4_id_fill)
+        # self.canvas.delete(*self.cloud_5_id_fill)
+        
+        self.cloud_1, self.cloud_1_id, self.cloud_1_id_fill=self.draw_ellipse(self.cloud_1[0], self.cloud_1[1], 5, 5, color=color, outline=color, fill=color)
+        self.cloud_2, self.cloud_2_id, self.cloud_2_id_fill=self.draw_ellipse(self.cloud_2[0], self.cloud_2[1], 5, 5, color=color, outline=color, fill=color)
+        self.cloud_3, self.cloud_3_id, self.cloud_3_id_fill=self.draw_ellipse(self.cloud_3[0], self.cloud_3[1], 5, 5, color=color, outline=color, fill=color)
+        self.cloud_4, self.cloud_4_id, self.cloud_4_id_fill=self.draw_ellipse(self.cloud_4[0], self.cloud_4[1], 5, 5, color=color, outline=color, fill=color)
+        self.cloud_5, self.cloud_5_id, self.cloud_5_id_fill=self.draw_filled_rectangle(self.cloud_5[0,0],self.cloud_5[0,1],self.cloud_5[1,0],self.cloud_5[1,1], color=color, outline=color, fill=color)
+    
+        
+            
+    def draw_cloud(self, x, y):  
+        arr=[]
+        self.cloud_1, self.cloud_1_id, self.cloud_1_id_fill=self.draw_ellipse(x, y-5, 5, 5, color='white', outline='white', fill='white')       
+        self.cloud_2, self.cloud_2_id, self.cloud_2_id_fill=self.draw_ellipse(x+15, y, 6, 6, color='white', outline='white', fill='white')
+        self.cloud_3, self.cloud_3_id, self.cloud_3_id_fill=self.draw_ellipse(x + 8, y, 8, 8, color='white', outline='white', fill='white')
+        self.cloud_4, self.cloud_4_id, self.cloud_4_id_fill=self.draw_ellipse(x+20, y -5, 5, 5, color='white', outline='white', fill='white')
+        #self.draw_ellipse(x + 20, y + 10, 8, 4, color='white', outline='white', fill='white')
+        
+        self.cloud_5, self.cloud_5_id, self.cloud_5_id_fill=self.draw_filled_rectangle(x,y,x+20,y-10, color='white', outline='white', fill='white')
 
+    
 ###########
 
     def adjust_to_screen(self, x, y):
