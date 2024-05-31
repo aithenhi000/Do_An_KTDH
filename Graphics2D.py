@@ -145,7 +145,10 @@ class Graphics2D(Frame):
         self.draw_bird2(-80, 55, fill='black')
         self.draw_bird3(-35, 70, fill='black')
         self.draw_sea(-120, 0, 120, -70)
+        self.draw_cloud(30, 50)
+        self.draw_cloud(-50, 60)
         self.draw_cloud(-60, 25)
+        
         self.draw_sailboat(-110, -20)
         
     def create_canvas(self):
