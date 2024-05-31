@@ -129,7 +129,7 @@ class Graphics2D(Frame):
     #list vật thể
     def draw_2d_main(self):
         self.clear_canvas()
-    
+
         self.draw_mountain(-110, 55)
         
         self.draw_bird1(-100, 65, fill='black')
@@ -141,7 +141,7 @@ class Graphics2D(Frame):
         self.draw_cloud(40, 80)
         self.draw_cloud(-60, 25)
         self.draw_sailboat(-110, -30)
-        self.draw_sun(40, 60)
+        self.draw_sun(0, 40)
         
     def create_canvas(self):
         self.canvas = Canvas(self, width=self.width, height=self.height, bg="#FEFAF6")
@@ -374,7 +374,43 @@ class Graphics2D(Frame):
                 x -= 1
                 p = p + 2*y - 2*x + 1
             
-        return np.array(([x_center, y_center, 1])), radius, arr
+        return np.array(([x_center, y_center, 1])), arr, arr_fill
+
+    def draw_dashed_circle(self, x_center, y_center, radius, dash_length):
+        x = radius
+        y = 0
+        p = 1 - radius
+
+        arr = []
+
+        count = 0
+        draw = True
+
+        while x >= y:
+            if draw:
+                arr.append(self.put_pixel(x_center + y, y_center + x))
+                arr.append(self.put_pixel(x_center + x, y_center + y))
+                arr.append(self.put_pixel(x_center + x, y_center - y))
+                arr.append(self.put_pixel(x_center + y, y_center - x))
+                
+                arr.append(self.put_pixel(x_center - y, y_center - x))
+                arr.append(self.put_pixel(x_center - x, y_center + y))
+                arr.append(self.put_pixel(x_center - y, y_center + x))
+                arr.append(self.put_pixel(x_center - x, y_center - y))
+            
+            count += 1
+            if count == dash_length:
+                count = 0
+                draw = not draw
+
+            y += 1
+            if p <= 0:
+                p = p + 2 * y + 1
+            else:
+                x -= 1
+                p = p + 2 * y - 2 * x + 1
+            
+        return np.array(([x_center, y_center, 1])), arr
 
     def draw_filled_circle(self, x_center, y_center, radius, color='black'):
         x = radius
@@ -570,16 +606,8 @@ class Graphics2D(Frame):
 
         
     def draw_sun(self, x0, y0):
-        self.sun, self.rad, self.sun_id = self.draw_circle(x0, y0, 10)
-        self.l1=self.draw_line(40, 71, 40, 73)
-        self.draw_line(51, 60, 53, 60)
-        self.draw_line(40, 48, 40, 46)
-        self.draw_line(29, 60, 27, 60)
-        self.draw_line(32, 67, 30, 69)
-        self.draw_line(48, 67, 50, 69)
-        self.draw_line(48, 50, 50, 48)
-        self.draw_line(32, 50, 30, 48)
-        self.put_pixel(x0, y0, color='red', outline='red')
+        self.sun_1, self.sun_1_id, self.sun_1_id_fill = self.draw_circle(x0, y0, 50)
+        self.sun_2, self.sun_2_id, self.sun_2_id_fill = self.draw_dashed_circle(x0, y0, 80, 5)
 
     def draw_bird1(self, x0, y0, color='black', outline='black', fill='black'):
         self.draw_ellipse(x0, y0, 1, 0, color=color, outline=outline, fill=fill)
@@ -647,16 +675,17 @@ class Graphics2D(Frame):
             
         return pos
     def DoiXung_cloud(self, choice, color="white"):
-        self.cloud_1=self.doi_xung(self.cloud_1, choice)
-        self.cloud_2=self.doi_xung(self.cloud_2, choice)
-        self.cloud_3=self.doi_xung(self.cloud_3, choice)
-        self.cloud_4=self.doi_xung(self.cloud_4, choice)
-        self.cloud_5=self.doi_xung(self.cloud_5, choice)
         self.cloud_1=self.ti_le(self.cloud_1, 0.8)
         self.cloud_2=self.ti_le(self.cloud_2, 0.8)
         self.cloud_3=self.ti_le(self.cloud_3, 0.8)
         self.cloud_4=self.ti_le(self.cloud_4, 0.8)
         self.cloud_5=self.ti_le(self.cloud_5, 0.8)
+        self.cloud_1=self.doi_xung(self.cloud_1, choice)
+        self.cloud_2=self.doi_xung(self.cloud_2, choice)
+        self.cloud_3=self.doi_xung(self.cloud_3, choice)
+        self.cloud_4=self.doi_xung(self.cloud_4, choice)
+        self.cloud_5=self.doi_xung(self.cloud_5, choice)
+        
         # self.canvas.delete(*self.cloud_1_id)
         # self.canvas.delete(*self.cloud_2_id)
         # self.canvas.delete(*self.cloud_3_id)
@@ -687,6 +716,7 @@ class Graphics2D(Frame):
         self.cloud_5, self.cloud_5_id, self.cloud_5_id_fill=self.draw_filled_rectangle(x,y,x+20,y-10, color='white', outline='white', fill='white')
 
     
+
 ###########
 
     def adjust_to_screen(self, x, y):
